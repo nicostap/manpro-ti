@@ -1,0 +1,15 @@
+{
+  "name": "manpro-ti-b5",
+  "version": "1.0.0",
+  "description": "Projek dari kelompok B5",
+  "scripts": {
+    "build:back": "docker compose build nestjs-app",
+    "build:front": "docker compose build vite-app",
+    "start:db": "docker compose up mysql-db phpmyadmin",
+    "start:back": "docker compose up nestjs-app --renew-anon-volumes",
+    "start:front": "docker compose up vite-app --renew-anon-volumes",
+    "clean": "docker compose down -v"
+  },
+  "author": "",
+  "license": "ISC"
+}
