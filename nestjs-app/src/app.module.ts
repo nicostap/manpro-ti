@@ -21,7 +21,7 @@ import { AppService } from './app.service';
         entities: [],
         synchronize: false,
       }),
-    })
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
