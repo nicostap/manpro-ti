@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Label Input</title>
+    <style>
+        .input-container {
+            position: relative;
+            width: 320px;
+            margin-bottom: 20px;
+        }
+
+        .input-container input {
+            width: 90%;
+            height: 40px;
+            border: 1px solid #C3C8CF;
+            border-radius: 4px;
+            padding: 0 10px;
+            font-size: 14px;
+            color: #2E3339;
+            background: #FFFFFF;
+            outline: none;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .input-container input:focus {
+            border-color: #B86BFC;
+            background-color: #FFFFFF;
+        }
+
+        .input-container label {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            font-size: 14px;
+            color: #C479D0;
+            pointer-events: none;
+            transform: translateY(-50%);
+            transition: all 0.2s ease;
+            z-index: 1;
+        }
+
+        .input-container input:focus + label,
+        .input-container input:not(:placeholder-shown) + label {
+            top: -20px;
+            font-size: 12px;
+            color: #B86BFC;
+        }
+
+        .g-recaptcha {
+            margin-top: 20px;
+        }
+
+        .footer-text {
+            position: absolute;
+            left: 556px;
+            top: 551px;
+            width: 320px;
+            text-align: center;
+            color: black;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-text span {
+            text-decoration: underline;
+            color: #D299DC;
+            cursor: pointer;
+        }
+
+        .button-container {
+            width: 300px;
+            height: 50px;
+            margin-top: 20px;
+            background: #B86BFC;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-container button {
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        function onSubmit(e) {
+            e.preventDefault(); // Prevent form submission until reCAPTCHA is verified
+
+            var response = grecaptcha.getResponse();
+            if (response.length === 0) {
+                alert('Please complete the reCAPTCHA');
+                return;
+            }
+
+            alert('Form submitted successfully');
+        }
+    </script>
+</head>
+<body>
+    <div style="width: 1433px; height: 745px; position: relative; background: white;">
+        <div style="width: 532px; height: 532px; left: -98px; top: -222px; position: absolute; background: radial-gradient(100% 100%, rgba(213, 213, 255, 0.50) 0%, rgba(221, 146, 233, 0.50) 50%, rgba(151, 142, 226, 0.50) 100%); box-shadow: 0 0 500px rgba(0, 0, 0, 0.1); border-radius: 50%; filter: blur(500px);"></div>
+        <div style="width: 532px; height: 532px; left: 1070px; top: 343px; position: absolute; background: radial-gradient(100% 100%, rgba(213, 213, 255, 0.50) 0%, rgba(221, 146, 233, 0.50) 50%, rgba(151, 142, 226, 0.50) 100%); box-shadow: 0 0 500px rgba(0, 0, 0, 0.1); border-radius: 50%; filter: blur(500px);"></div>
+        <div style="width: 532px; height: 532px; left: 1094px; top: 724px; position: absolute; background: radial-gradient(100% 100%, rgba(213, 213, 255, 0.50) 0%, rgba(221, 146, 233, 0.50) 50%, rgba(151, 142, 226, 0.50) 100%); box-shadow: 0 0 500px rgba(0, 0, 0, 0.1); border-radius: 50%; filter: blur(500px);"></div>
+        
+        <div style="width: 320px; height: 27px; left: 556px; top: 166px; position: absolute; text-align: center; color: #2E3339; font-size: 31px; font-weight: 700;">Welcome Back</div>
+        
+        <form onsubmit="onSubmit(event)" style="position: relative; left: 556px; top: 250px;">
+            <div class="input-container">
+                <input type="email" id="email" placeholder=" " />
+                <label for="email">Email address</label>
+            </div>
+
+            <div class="input-container">
+                <input type="password" id="password" placeholder=" " />
+                <label for="password">Password</label>
+            </div>
+
+            <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
+
+            <div class="button-container">
+                <button type="submit">Continue</button>
+            </div>
+        </form>
+
+        <div class="footer-text">
+            Don't have an account? <span>Sign up</span>
+        </div>
+
+        <div style="width: 114px; height: 51.36px; position: absolute; left: 12px; top: 21px; display: flex; align-items: center;">
+            <img src="logocanvax.png" alt="Logo" style="width: 80px; height: 75px; transform: rotate(180deg); margin-right: 10px;"/>
+            <div style="font-size: 36px; font-weight: 700; color: #2E3339;">CanvaX</div>
+        </div>
+        
+    </div>
+</body>
+</html>
