@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
   server: {
@@ -9,4 +10,12 @@ export default defineConfig({
       interval: 1000,
     },
   },
+  root: 'src/pages/home',
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      }
+    }
+  }
 });
