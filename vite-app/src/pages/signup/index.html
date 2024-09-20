@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Floating Label Input</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .input-container {
             position: relative;
-            width: 320px;
             margin-bottom: 20px;
         }
 
         .input-container input {
-            width: 90%;
+            width: 100%;
             height: 40px;
             border: 1px solid #C3C8CF;
             border-radius: 4px;
@@ -48,45 +50,12 @@
             color: #B86BFC;
         }
 
-        .g-recaptcha {
-            margin-top: 20px;
-        }
-
-        .footer-text {
+        .blur-background {
             position: absolute;
-            left: 556px;
-            top: 551px;
-            width: 320px;
-            text-align: center;
-            color: black;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .footer-text span {
-            text-decoration: underline;
-            color: #D299DC;
-            cursor: pointer;
-        }
-
-        .button-container {
-            width: 300px;
-            height: 50px;
-            margin-top: 20px;
-            background: #B86BFC;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .button-container button {
-            color: white;
-            font-size: 15px;
-            font-weight: 500;
-            border: none;
-            background: transparent;
-            cursor: pointer;
+            background: radial-gradient(100% 100%, rgba(213, 213, 255, 0.50) 0%, rgba(221, 146, 233, 0.50) 50%, rgba(151, 142, 226, 0.50) 100%);
+            box-shadow: 0 0 500px rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            filter: blur(500px);
         }
     </style>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -105,40 +74,47 @@
     </script>
 </head>
 <body>
-    <div style="width: 1433px; height: 745px; position: relative; background: white;">
-        <div style="width: 532px; height: 532px; left: -98px; top: -222px; position: absolute; background: radial-gradient(100% 100%, rgba(213, 213, 255, 0.50) 0%, rgba(221, 146, 233, 0.50) 50%, rgba(151, 142, 226, 0.50) 100%); box-shadow: 0 0 500px rgba(0, 0, 0, 0.1); border-radius: 50%; filter: blur(500px);"></div>
-        <div style="width: 532px; height: 532px; left: 1070px; top: 343px; position: absolute; background: radial-gradient(100% 100%, rgba(213, 213, 255, 0.50) 0%, rgba(221, 146, 233, 0.50) 50%, rgba(151, 142, 226, 0.50) 100%); box-shadow: 0 0 500px rgba(0, 0, 0, 0.1); border-radius: 50%; filter: blur(500px);"></div>
-        <div style="width: 532px; height: 532px; left: 1094px; top: 724px; position: absolute; background: radial-gradient(100% 100%, rgba(213, 213, 255, 0.50) 0%, rgba(221, 146, 233, 0.50) 50%, rgba(151, 142, 226, 0.50) 100%); box-shadow: 0 0 500px rgba(0, 0, 0, 0.1); border-radius: 50%; filter: blur(500px);"></div>
-        
-        <div style="width: 320px; height: 27px; left: 556px; top: 166px; position: absolute; text-align: center; color: #2E3339; font-size: 31px; font-weight: 700;">Create an Account</div>
-        
-        <form onsubmit="onSubmit(event)" style="position: relative; left: 556px; top: 250px;">
-            <div class="input-container">
-                <input type="email" id="email" placeholder=" " />
-                <label for="email">Email address</label>
-            </div>
-
-            <div class="input-container">
-                <input type="password" id="password" placeholder=" " />
-                <label for="password">Password</label>
-            </div>
-
-            <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
-
-            <div class="button-container">
-                <button type="submit">Continue</button>
-            </div>
-        </form>
-
-        <div class="footer-text">
-            Don't have an account? <span>Sign up</span>
-        </div>
-
-        <div style="width: 114px; height: 51.36px; position: absolute; left: 12px; top: 21px; display: flex; align-items: center;">
+    <header>
+        <div style="position: absolute; left: 12px; top: 10px; display: flex; align-items: center;">
             <img src="logocanvax.png" alt="Logo" style="width: 80px; height: 75px; transform: rotate(180deg); margin-right: 10px;"/>
             <div style="font-size: 36px; font-weight: 700; color: #2E3339;">CanvaX</div>
         </div>
+    </header>
+    <div class="container-fluid" style="position: relative; background: white; min-height: 100vh;">
+        <div class="blur-background" style="width: 532px; height: 532px; left: -98px; top: -222px;"></div>
+        <div class="blur-background" style="width: 532px; height: 532px; right: -98px; top: 10%;"></div>
+        <div class="blur-background" style="width: 532px; height: 532px; right: -98px; bottom: -222px;"></div>
         
+        <div class="text-center" style="margin-top: 100px;">
+            <h1 class="font-weight-bold" style="color: #2E3339;">Create an Account</h1>
+        </div>
+        
+        <form onsubmit="onSubmit(event)" class="mx-auto" style="max-width: 320px; margin-top: 30px;">
+            <div class="input-container">
+                <input type="email" id="email" placeholder=" " required />
+                <label for="email">Email address</label>
+            </div>
+        
+            <div class="input-container">
+                <input type="text" id="username" placeholder=" " required />
+                <label for="username">Username</label>
+            </div>
+        
+            <div class="input-container">
+                <input type="password" id="password" placeholder=" " required />
+                <label for="password">Password</label>
+            </div>
+        
+            <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
+        
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary w-100" style="background: #B86BFC; border: none;">Continue</button>
+            </div>
+        </form>
+
+        <div class="footer-text text-center mt-3">
+            Don't have an account? <span style="text-decoration: underline; color: #D299DC; cursor: pointer;">Sign up</span>
+        </div>
     </div>
 </body>
 </html>

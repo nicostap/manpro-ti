@@ -10,7 +10,7 @@ export default defineConfig({
       interval: 1000,
     },
   },
-  root: 'src/pages/home',
+  root: 'src/pages/signup',
   build: {
     rollupOptions: {
       input: {

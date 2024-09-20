@@ -1,50 +1,64 @@
-<div style="width: 1440px; height: 800px; position: relative; background: white">
-    <div style="width: 585px; height: 585px; left: 234px; top: 267px; position: absolute; background: #E4D0F5; box-shadow: 400px 400px 400px; border-radius: 9999px; filter: blur(400px)"></div>
-    <div style="width: 606px; height: 606px; left: 347px; top: -121px; position: absolute; background: #E4D0F5; box-shadow: 200px 200px 200px; border-radius: 9999px; filter: blur(200px)"></div>
-    <div style="width: 606px; height: 266px; left: 850px; top: -81px; position: absolute; background: #E4D0F5; box-shadow: 200px 200px 200px; border-radius: 9999px; filter: blur(200px)"></div>
-    <div style="width: 585px; height: 585px; left: 1101px; top: -185px; position: absolute; background: #E9DAF7; box-shadow: 400px 400px 400px; border-radius: 9999px; filter: blur(400px)"></div>
-    
-    <div style="width: 114px; height: 51.36px; position: absolute; left: 12px; top: 21px; display: flex; align-items: center;">
-      <img src="logocanvax.png" alt="Logo" style="width: 80px; height: 75px; transform: rotate(180deg); margin-right: 10px;"/>
-      <div style="font-size: 36px; font-weight: 700; color: #2E3339;">CanvaX</div>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="container-fluid px-4 px-md-5" style="max-width: 1440px;">
+  <div class="position-absolute" style="width: 585px; height: 585px; left: 234px; top: 267px; background: #E4D0F5; border-radius: 9999px; filter: blur(200px); z-index: -1;"></div>
+  <div class="position-absolute" style="width: 606px; height: 606px; left: 347px; top: -121px; background: #E4D0F5; border-radius: 9999px; filter: blur(200px); z-index: -1;"></div>
+  <div class="position-absolute" style="width: 585px; height: 585px; left: 1101px; top: -185px; background: #E9DAF7; border-radius: 9999px; filter: blur(200px); z-index: -1;"></div>
+
+  <!-- Logo dan Judul -->
+  <div class="row align-items-center my-4">
+    <div class="col-6 d-flex align-items-center">
+      <img src="logocanvax.png" alt="Logo" style="width: 80px; height: 75px; transform: rotate(180deg); margin-right: 10px;" />
+      <h1 style="font-size: 36px; font-weight: 700; color: #2E3339;">CanvaX</h1>
     </div>
-  
-    <div style="width: 83px; height: 27px; left: 1273px; top: 65px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
-      <div style="text-align: center; color: #2E3339; font-size: 20px; font-family: Inter; font-weight: 700; line-height: 27px; word-wrap: break-word">Log out</div>
+    <div class="col-6 text-end">
+      <a href="#" class="text-secondary" style="font-size: 20px; font-weight: bold;">Log out</a>
     </div>
-  
-    <div style="left: 517px; top: 153px; position: absolute; color: #37383C; font-size: 50px; font-family: Roboto; font-weight: 700; text-transform: capitalize; word-wrap: break-word">Image to Painting</div>
-    <div style="width: 603px; height: 187px; left: 457px; top: 267px; position: absolute">
-      <div style="width: 525px; height: 187px; left: 0px; top: 0px; position: absolute; background: #A848FF"></div>
-      <div style="width: 577px; height: 132px; left: 26px; top: 27px; position: absolute">
-        <div style="width: 577px; height: 132px; left: 0px; top: 0px; position: absolute; background: rgba(221, 146, 233, 0)"></div>
-        <div style="width: 470px; height: 132px; left: 0px; top: 0px; position: absolute; background: #D2A0FF; border: 1px white dotted"></div>
-        <div style="width: 48.43px; height: 47px; padding-top: 1.64px; padding-bottom: 1.64px; left: 235px; top: 29px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
-            <img src="up.png" alt="">
+  </div>
+
+  <!-- Judul Utama -->
+  <div class="row">
+    <div class="col text-center">
+      <h2 style="color: #37383C; font-size: 50px; font-family: Roboto; font-weight: 700; text-transform: capitalize;">
+        Image to Painting
+      </h2>
+    </div>
+  </div>
+
+  <!-- Upload Section -->
+  <div class="row justify-content-center my-5">
+    <div class="col-md-6 col-12 px-3 px-md-5"> <!-- Add padding for smaller screens -->
+      <div style="background: #A848FF; display: flex; justify-content: center; align-items: center; padding: 35px;">
+        <div style="background: #D2A0FF; border: 1px white dotted; padding: 20px; width: 1000px;">
+          <div class="d-flex justify-content-center align-items-center"> <!-- Ubah tinggi untuk menambah ruang -->
+            <img src="up.png" alt="Upload Icon" style="width: 80px; height: 80px;"> <!-- Perbesar ukuran ikon -->
+          </div>
+          <div class="text-center mt-4"> <!-- Ubah margin top untuk menambah jarak -->
+            <span style="color: #FFFDFD; font-size: 15px;">Drop file to upload or </span>
+            <span style="color: #2E3339; font-size: 15px; font-weight: bold;">Browse</span>
+          </div>
         </div>
-        <div style="width: 245.23px; left: 145.98px; top: 76px; position: absolute"><span style="color: #FFFDFD; font-size: 15px; font-family: Lexend Deca; font-weight: 300; line-height: 22px; word-wrap: break-word">Drop file to upload or </span><span style="color: #2E3339; font-size: 15px; font-family: Lexend Deca; font-weight: 300; line-height: 22px; word-wrap: break-word">Browse</span></div>
       </div>
     </div>
-    
-    <div style="width: 340px; height: 104px; left: 48px; top: 570px; position: absolute; text-align: center"><span style="color: #505258; font-size: 15px; font-family: Lexend Deca; font-weight: 700; line-height: 22px; word-wrap: break-word">Seamless Transformation</span><span style="color: #505258; font-size: 15px; font-family: Lexend Deca; font-weight: 300; line-height: 22px; word-wrap: break-word">  Our advanced algorithm transforms your images into intricate batik patterns with just a few clicks, preserving the unique essence of both traditional and modern designs.</span></div>
-    
-    <div style="width: 395px; height: 88px; left: 542px; top: 570px; position: absolute; text-align: center"><span style="color: #505258; font-size: 15px; font-family: Lexend Deca; font-weight: 700; line-height: 22px; word-wrap: break-word">Fast and Easy</span><span style="color: #505258; font-size: 15px; font-family: Lexend Deca; font-weight: 300; line-height: 22px; word-wrap: break-word">  No need for complex software or design skills. Simply upload your image, and our tool will generate a batik pattern in seconds, ready for download and use in your projects.</span></div>
-    
-    <div style="width: 370px; height: 104px; left: 1045px; top: 571px; position: absolute; text-align: center"><span style="color: #505258; font-size: 15px; font-family: Lexend Deca; font-weight: 700; line-height: 22px; word-wrap: break-word">Free to Use</span><span style="color: #505258; font-size: 15px; font-family: Lexend Deca; font-weight: 300; line-height: 22px; word-wrap: break-word">  Our tool is free to use, with no hidden costs or watermarks. Enjoy unlimited conversions and let your creativity flow without any restrictions. Download all the results for free.</span></div>
-    
-    <div style="width: 41px; height: 41px; padding-top: 0.91px; padding-bottom: 0.91px; left: 722px; top: 521px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
-      <img src="star.png" alt="">
-    </div>
-    
-    <div style="width: 30.66px; height: 32.82px; left: 203px; top: 521px; position: absolute">
-      <img src="recyle.png" alt="">
-    </div>
-    
-    <div style="width: 38px; height: 38px; padding: 1.36px; left: 1211px; top: 523px; position: absolute; justify-content: center; align-items: center; display: inline-flex">
-      <img src="coin.png" alt="">
-    </div>
-    
-    
-
   </div>
-  
+
+  <!-- Features Section -->
+  <div class="row text-center my-5">
+    <div class="col-md-4 col-12 mb-4">
+      <img src="recyle.png" alt="" style="width: 32px; height: 32px;">
+      <h4 style="font-weight: bold; color: #505258;">Seamless Transformation</h4>
+      <p style="color: #505258;">Our advanced algorithm transforms your images into intricate batik patterns, preserving the unique essence of both traditional and modern designs.</p>
+    </div>
+    <div class="col-md-4 col-12 mb-4">
+      <img src="star.png" alt="" style="width: 41px; height: 41px;">
+      <h4 style="font-weight: bold; color: #505258;">Fast and Easy</h4>
+      <p style="color: #505258;">No need for complex software. Simply upload your image, and our tool will generate a batik pattern in seconds, ready for download.</p>
+    </div>
+    <div class="col-md-4 col-12 mb-4">
+      <img src="coin.png" alt="" style="width: 38px; height: 38px;">
+      <h4 style="font-weight: bold; color: #505258;">Free to Use</h4>
+      <p style="color: #505258;">Our tool is free to use with no hidden costs or watermarks. Download unlimited results for free.</p>
+    </div>
+  </div>
+</div>
