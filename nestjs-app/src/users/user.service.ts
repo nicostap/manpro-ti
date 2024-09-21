@@ -6,27 +6,38 @@ import { CreateUserDto } from './user.controller';
 
 @Injectable()
 export class UsersService {
-    remove(id: string): Promise<void> {
-        throw new Error('Method not implemented.');
-    }
-    findAll(): Promise<User[]> {
-        throw new Error('Method not implemented.');
-    }
-    create(createUserDto: CreateUserDto): Promise<User> {
-        throw new Error('Method not implemented.');
-    }
-    findOne(id: string): Promise<User> {
-        throw new Error('Method not implemented.');
-    }
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>
     ) {}
 
-    async signup(email: string, password: string): Promise<User> {
-        const newUser = this.userRepository.create({ email, password });
+    async create(createUserDto: CreateUserDto): Promise<User> {
+        const newUser = this.userRepository.create({
+            email: createUserDto.email,
+            username: createUserDto.username,
+            password: createUserDto.password,
+            join_date: new Date()
+        });
         return await this.userRepository.save(newUser);
     }
+
+    async findAll(): Promise<User[]> {
+        return await this.userRepository.find();
+    }
+
+    async findOne(id: string): Promise<User> {
+        return await this.userRepository.findOne({ where: { id: Number(id) } });
+    }
+    
+    async remove(id: string): Promise<void> {
+        await this.userRepository.delete(Number(id));
+    }
+    
+    async signup(createUserDto: CreateUserDto): Promise<User> {
+        const newUser = this.userRepository.create(createUserDto);
+        return await this.userRepository.save(newUser);
+    }
+    
 
     async signin(email: string, password: string): Promise<User | null> {
         return await this.userRepository.findOne({ where: { email, password } });
