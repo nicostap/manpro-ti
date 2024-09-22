@@ -58,20 +58,54 @@
             filter: blur(500px);
         }
     </style>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
     <script>
-        function onSubmit(e) {
-            e.preventDefault(); // Prevent form submission until reCAPTCHA is verified
+        async function onSubmit(e) {
+            e.preventDefault(); // Prevent default form submission
+    
+            // var response = grecaptcha.getResponse();
+            // if (response.length === 0) {
+            //     alert('Please complete the reCAPTCHA');
+            //     return;
+            // }
+    
+            // Get form data
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-            var response = grecaptcha.getResponse();
-            if (response.length === 0) {
-                alert('Please complete the reCAPTCHA');
-                return;
+            console.log({ email, username, password }); // Log form data
+    
+            // Prepare data for submission
+            const data = {
+                email,
+                username,
+                password,
+            };
+    
+            try {
+                const res = await fetch('http://localhost:3001/user', { // Adjust the URL to match your backend endpoint
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+    
+                if (res.ok) {
+                    alert('Form submitted successfully');
+                    // Optionally redirect or clear the form here
+                } else {
+                    const errorData = await res.json();
+                    alert(`Error: ${errorData.message}`);
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('An error occurred while submitting the form.');
             }
-
-            alert('Form submitted successfully');
         }
     </script>
+    
 </head>
 <body>
     <header>
@@ -105,7 +139,7 @@
                 <label for="password">Password</label>
             </div>
         
-            <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
+            <!-- <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div> -->
         
             <div class="text-center mt-3">
                 <button type="submit" class="btn btn-primary w-100" style="background: #B86BFC; border: none;">Continue</button>
