@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/user.module';
 import { User } from './users/user.entity';
+import { JobModule } from './job/job.module';
+import * as session from 'express-session';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -25,8 +28,23 @@ import { User } from './users/user.entity';
       }),
     }),
     UsersModule,
+    JobModule,
+    PassportModule.register({ session: true }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        session({
+          secret: 'your-secret-key',
+          resave: false,
+          saveUninitialized: false,
+          cookie: { maxAge: 3600000 },
+        }),
+      )
+      .forRoutes('*');
+  }
+}

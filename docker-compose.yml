@@ -1,12 +1,11 @@
-version: '3.8'
+version: "3.8"
 
 networks:
   default:
 
 services:
-
   mysql-db:
-    container_name:  mysql-db
+    container_name: mysql-db
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
@@ -20,7 +19,7 @@ services:
       - ./mysql-db:/docker-entrypoint-initdb.d/
     networks:
       - default
-      
+
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin
@@ -52,7 +51,7 @@ services:
     tty: true
     volumes:
       - ./nestjs-app:/app
-      - node_modules_nestjs:/app/node_modules
+      - ./nestjs-app/node_modules:/app/node_modules
     networks:
       - default
 
@@ -69,12 +68,11 @@ services:
     tty: true
     volumes:
       - ./vite-app:/app
-      - node_modules_vite:/app/node_modules
+      - ./vite-app/node_modules:/app/node_modules
     networks:
       - default
 
-volumes: 
+volumes:
   mysql-volume:
   node_modules_nestjs:
   node_modules_vite:
-

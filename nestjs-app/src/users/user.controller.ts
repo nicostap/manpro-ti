@@ -1,35 +1,51 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUserDto } from './create-user.dto';
 import { User } from './user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
-    @Post()
-    async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-        return await this.usersService.create(createUserDto);
-    }
+  @Post()
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return await this.usersService.create(createUserDto);
+  }
 
-    @Post('signin') 
-    async signin(@Body() body: { email: string; password: string }): Promise<User | null> {
-        const { email, password } = body;
-        return await this.usersService.signin(email, password);
-    }
+  @Post('signin')
+  @UseGuards(AuthGuard('local'))
+  async signIn(@Req() req) {
+    return { message: 'Logged in', user: req.user };
+  }
 
-    @Get()
-    async findAll(): Promise<User[]> {
-        return await this.usersService.findAll();
-    }
+  @Post('signout')
+  async signOut(@Req() req) {
+    req.logout();
+    return { message: 'Logged out' };
+  }
 
-    @Get(':id')
-    async findOne(@Param('id') id: string): Promise<User> {
-        return await this.usersService.findOne(id);
-    }
+  @Get()
+  async findAll(): Promise<User[]> {
+    return await this.usersService.findAll();
+  }
 
-    @Delete(':id')
-    async remove(@Param('id') id: string): Promise<void> {
-        return await this.usersService.remove(id);
-    }
+  @Get(':id')
+  async findOne(@Param('id') id: number): Promise<User> {
+    return await this.usersService.findOne(id);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: number): Promise<void> {
+    return await this.usersService.remove(id);
+  }
 }
