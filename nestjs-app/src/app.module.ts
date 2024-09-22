@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/user.module';
+import { User } from './users/user.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { UsersModule } from './users/user.module';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [],
+        entities: [User],
         synchronize: false,
       }),
     }),

@@ -14,6 +14,7 @@ export class User {
   @Column()
   password: string;
 
-  @CreateDateColumn()
+  // You don't need to manually set 'join_date', since it's automatically handled in the DB.
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   join_date: Date;
 }
