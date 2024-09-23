@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="container-fluid px-4 px-md-5">
+      <div
+        class="position-absolute"
+        style="
+          width: 532px;
+          height: 532px;
+          right: 0vw;
+          top: 30vh;
+          background: radial-gradient(#d5d5ff 0%, #dd92e9 50%, #978ee2 100%);
+          border-radius: 9999px;
+          z-index: -1;
+          filter: blur(200px);
+        "
+      ></div>
+
+      <!-- header -->
+      <nav class="navbar navbar-expand-lg navbar-light p-4">
+        <div class="container-fluid">
+          <a class="navbar-brand d-flex align-items-center" href="#">
+            <img
+              src="/logocanvax.png"
+              alt="Logo"
+              class="img-fluid"
+              style="width: 100px; transform: rotate(180deg)"
+            />
+            <h1
+              class="text-dark fw-bold mx-2 d-none d-sm-block"
+              style="font-size: 3rem"
+            >
+              CanvaX
+            </h1>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarNav"
+          >
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a
+                  class="nav-link text-dark fw-bold"
+                  href="#"
+                  style="font-size: 1.5rem"
+                  >Sign Up</a
+                >
+              </li>
+              <hr>
+              <li class="nav-item">
+                <a
+                  class="nav-link text-dark fw-bold"
+                  href="#"
+                  style="font-size: 1.5rem"
+                  >Log in</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Judul Utama -->
+      <div class="row align-items-center text-center my-5">
+        <h2
+          style="
+            color: #37383c;
+            font-size: 50px;
+            font-weight: 700;
+            text-transform: capitalize;
+          "
+        >
+          Image to Painting
+        </h2>
+      </div>
+
+      <!-- Upload Section -->
+      <div class="row justify-content-center my-5">
+        <div class="col-md-6 col-12 px-3 px-md-5">
+          <!-- Add padding for smaller screens -->
+          <label class="w-100">
+            <div class="p-4 col-12" style="background: #a848ff">
+              <div
+                class="p-4"
+                style="background: #d2a0ff; border: 1px white dotted"
+              >
+                <div class="d-flex justify-content-center align-items-center">
+                  <!-- Ubah tinggi untuk menambah ruang -->
+                  <img
+                    src="/up.png"
+                    alt="Upload Icon"
+                    style="width: 80px; height: 80px"
+                  />
+                  <!-- Perbesar ukuran ikon -->
+                </div>
+                <div class="text-center mt-4">
+                  <!-- Ubah margin top untuk menambah jarak -->
+                  <span style="color: #fffdfd; font-size: 15px"
+                    >Drop file to upload or
+                  </span>
+                  <span
+                    style="color: #2e3339; font-size: 15px; font-weight: bold"
+                    >Browse</span
+                  >
+                </div>
+              </div>
+            </div>
+            <input class="d-none" type="file" />
+          </label>
+        </div>
+      </div>
+
+      <!-- Features Section -->
+      <div class="row text-center my-5">
+        <div class="col-md-4 col-12 mb-4">
+          <img src="/recyle.png" alt="" style="width: 32px; height: 32px" />
+          <h4 class="mt-3" style="font-weight: bold; color: #505258">
+            Seamless Transformation
+          </h4>
+          <p style="color: #505258">
+            Our advanced algorithm transforms your images into intricate batik
+            patterns, preserving the unique essence of both traditional and
+            modern designs.
+          </p>
+        </div>
+        <div class="col-md-4 col-12 mb-4">
+          <img src="/star.png" alt="" style="width: 41px; height: 41px" />
+          <h4 class="mt-3" style="font-weight: bold; color: #505258">
+            Fast and Easy
+          </h4>
+          <p style="color: #505258">
+            No need for complex software. Simply upload your image, and our tool
+            will generate a batik pattern in seconds, ready for download.
+          </p>
+        </div>
+        <div class="col-md-4 col-12 mb-4">
+          <img src="/coin.png" alt="" style="width: 38px; height: 38px" />
+          <h4 class="mt-3" style="font-weight: bold; color: #505258">
+            Free to Use
+          </h4>
+          <p style="color: #505258">
+            Our tool is free to use with no hidden costs or watermarks. Download
+            unlimited results for free.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
