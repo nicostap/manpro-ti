@@ -5,9 +5,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+export type JobType = 'VANGOGH' | 'MONET' | 'CAZENNE';
 
 @Entity('job')
 export class Job {
@@ -22,10 +23,13 @@ export class Job {
   user: User;
 
   @Column({ default: 'PENDING' })
-  status: string;
+  status: 'PENDING' | 'COMPLETE';
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_date: Date;
+
+  @Column()
+  type: JobType;
 
   @Column()
   directory: string;

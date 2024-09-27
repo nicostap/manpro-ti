@@ -1,13 +1,14 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as session from 'express-session';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/user.module';
-import { User } from './users/user.entity';
+import { Job } from './job/entities/job.entity';
 import { JobModule } from './job/job.module';
-import * as session from 'express-session';
-import { PassportModule } from '@nestjs/passport';
+import { User } from './users/user.entity';
+import { UsersModule } from './users/user.module';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { PassportModule } from '@nestjs/passport';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [User],
+        entities: [User, Job],
         synchronize: false,
       }),
     }),

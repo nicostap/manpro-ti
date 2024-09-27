@@ -3,8 +3,6 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-CHECKPOINT_GEN_H = "genh.pth.tar"
-
 transforms = A.Compose(
     [
         A.Resize(height=256, width=256),

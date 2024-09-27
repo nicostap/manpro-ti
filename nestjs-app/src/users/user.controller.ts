@@ -1,17 +1,19 @@
 import {
+  Body,
   Controller,
   Get,
+  Next,
   Post,
-  Body,
-  Param,
-  Delete,
-  UseGuards,
   Req,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
-import { UsersService } from './user.service';
+import { NextFunction, Response } from 'express';
+import { UserRequest } from 'src/interfaces';
 import { CreateUserDto } from './create-user.dto';
+import { LocalGuard } from './local/local.guard';
 import { User } from './user.entity';
-import { AuthGuard } from '@nestjs/passport';
+import { UsersService } from './user.service';
 
 @Controller('user')
 export class UsersController {
@@ -22,30 +24,29 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
+  @Get()
+  async findCurrentUser(@Req() req: UserRequest) {
+    return { user: req.user };
+  }
+
   @Post('signin')
-  @UseGuards(AuthGuard('local'))
-  async signIn(@Req() req) {
+  @UseGuards(LocalGuard)
+  async signIn(@Req() req: UserRequest) {
     return { message: 'Logged in', user: req.user };
   }
 
   @Post('signout')
-  async signOut(@Req() req) {
-    req.logout();
+  async signOut(
+    @Req() req: UserRequest,
+    @Res() res: Response,
+    @Next() next: NextFunction,
+  ) {
+    req.logout(function (err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/');
+    });
     return { message: 'Logged out' };
-  }
-
-  @Get()
-  async findAll(): Promise<User[]> {
-    return await this.usersService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: number): Promise<User> {
-    return await this.usersService.findOne(id);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: number): Promise<void> {
-    return await this.usersService.remove(id);
   }
 }

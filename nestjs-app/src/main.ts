@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { join } from 'path';
+import { AppModule } from './app.module';
 import { User } from './users/user.entity';
-import { getConnection } from 'typeorm';
 import { UsersService } from './users/user.service';
 
 declare const module: any;

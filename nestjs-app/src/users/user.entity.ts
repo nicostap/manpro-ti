@@ -1,8 +1,8 @@
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('user')
@@ -19,7 +19,6 @@ export class User {
   @Column()
   password: string;
 
-  // You don't need to manually set 'join_date', since it's automatically handled in the DB.
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   join_date: Date;
 }

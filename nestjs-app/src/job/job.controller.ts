@@ -1,33 +1,44 @@
 import {
+  Body,
   Controller,
   Get,
   NotFoundException,
   Param,
   Post,
+  Req,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import * as fs from 'fs';
 import { resolve } from 'path';
+import { UserRequest } from 'src/interfaces';
+import { AuthGuard } from 'src/users/auth.guard';
+import { JobType } from './entities/job.entity';
 import { JobService } from './job.service';
 
+@UseGuards(AuthGuard)
 @Controller('job')
 export class JobController {
   constructor(private readonly jobService: JobService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  create(@UploadedFile() file: Express.Multer.File) {
-    return this.jobService.create(file);
+  create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('type') type: JobType,
+    @Req() req: UserRequest,
+  ) {
+    return this.jobService.create(file, type, req.user.id);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number, @Res() res: Response) {
+  async findOne(@Param('id') id: number, @Req() req: UserRequest, @Res() res: Response) {
     const job = await this.jobService.findOne(id);
-    if (!job) {
+    if (!job || job.user_id != req.user.id) {
       throw new NotFoundException('Job not found');
     }
     const imagePath = resolve(
