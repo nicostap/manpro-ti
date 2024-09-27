@@ -74,5 +74,3 @@ services:
 
 volumes:
   mysql-volume:
-  node_modules_nestjs:
-  node_modules_vite:
