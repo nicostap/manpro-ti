@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:18-bullseye-slim
 
 RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
 

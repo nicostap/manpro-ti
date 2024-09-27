@@ -1,6 +1,10 @@
+--index-url=https://download.pytorch.org/whl/cpu
+--extra-index-url=https://pypi.org/simple
+
 albumentations
-torch
-torchvision
-torchaudio
 super-image
 opencv-python
+
+torch==2.4.1+cpu
+torchvision==0.19.1+cpu
+torchaudio==2.4.1+cpu
