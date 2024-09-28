@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { spawn } from 'child_process';
+import { existsSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
-import sharp from 'sharp';
+import * as sharp from 'sharp';
 import { Repository } from 'typeorm';
 import { Job, JobType } from './entities/job.entity';
 
@@ -14,31 +15,41 @@ export class JobService {
   ) {}
 
   async create(file: Express.Multer.File, type: JobType, user_id: number) {
-    const newFilename = 'source.png';
+    const fileName = 'source.png';
     const directory = `${new Date().toISOString()}-${Math.floor(Math.random() * 1000)}`;
-    const outputPath = resolve(
-      __dirname,
-      '..',
-      '..',
-      'uploads',
-      directory,
-      newFilename,
-    );
-    await sharp(file.buffer).png({ quality: 100 }).toFile(outputPath);
+    const directoryPath = resolve(__dirname, '..', 'uploads', directory);
+
+    void this.saveFile(file, directoryPath, fileName).then(() => {
+      spawn('python3', [
+        resolve(__dirname, '..', 'uploads', 'execute.py'),
+        directory,
+        type,
+      ]);
+    });
+
     const newJob = this.jobRepository.create({
       user_id,
       directory,
       type,
     });
-    await this.jobRepository.save(newJob);
-    const pythonProcess = spawn('python', [
-      resolve(__dirname, '..', '..', 'uploads', 'execute.py'),
-      directory,
-      type,
-    ]);
+    const savedJob = await this.jobRepository.save(newJob);
+    return savedJob.id;
   }
 
   findOne(id: number) {
     return this.jobRepository.findOne({ where: { id } });
+  }
+
+  private async saveFile(
+    file: Express.Multer.File,
+    directoryPath: string,
+    fileName: string,
+  ) {
+    if (!existsSync(directoryPath)) {
+      mkdirSync(directoryPath, { recursive: true });
+    }
+    await sharp(file.buffer)
+      .png({ quality: 100 })
+      .toFile(resolve(directoryPath, fileName));
   }
 }

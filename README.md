@@ -3,8 +3,6 @@
 Requirement :
 1. Install node.js
 2. Install docker desktop
-3. Install extension prettier di vscode
-4. Coba ctrl+shift+i di vscode buat pastikan prettier terpasang. Ctrl+shift+i buat otomatis merapikan kode.
 
 Set up :
 1. Buka folder projek

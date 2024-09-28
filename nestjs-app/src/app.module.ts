@@ -26,6 +26,9 @@ import { UsersModule } from './users/user.module';
         database: configService.get('DB_DATABASE'),
         entities: [User, Job],
         synchronize: false,
+        extra: {
+          connectionLimit: 10,
+        },
       }),
     }),
     UsersModule,

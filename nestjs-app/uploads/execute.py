@@ -30,7 +30,7 @@ def execute(loader, gen_H):
 
 def main():
     gen_H = Generator(img_channels=3, num_residuals=9).to(config.DEVICE)
-    load_checkpoint(sys.argv[2], gen_H)
+    load_checkpoint(f"{sys.argv[2]}.tar", gen_H)
 
     dataset = ImageDataset(root_image=sys.argv[1], transform=config.transforms)
     dataloader = DataLoader(dataset, batch_size=1, shuffle=False)

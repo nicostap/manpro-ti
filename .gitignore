@@ -124,3 +124,10 @@ dist
 
 # Models
 *.tar
+__pycache__/
+
+# Results
+nestjs-app/uploads/**/*.png
+
+# Leftover
+nestjs-app/my-venv/

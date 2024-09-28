@@ -44,7 +44,6 @@ export class JobController {
     const imagePath = resolve(
       __dirname,
       '..',
-      '..',
       'uploads',
       job.directory,
       'result.png',
