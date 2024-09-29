@@ -20,9 +20,9 @@ export class JobService {
     const directoryPath = resolve(__dirname, '..', 'uploads', directory);
 
     void this.saveFile(file, directoryPath, fileName).then(() => {
-      spawn('python3', [
-        `"${resolve(__dirname, '..', 'uploads', 'execute.py')}"`,
-        `"${directory}"`,
+      spawn('/usr/bin/python3', [
+        resolve(__dirname, '..', 'uploads', 'execute.py'),
+        directory,
         type,
       ]).on('error', function (err) {
         Logger.error('Image generation error: ' + err);
