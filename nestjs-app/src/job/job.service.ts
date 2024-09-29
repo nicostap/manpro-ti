@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { spawn } from 'child_process';
 import { existsSync, mkdirSync } from 'fs';
@@ -21,10 +21,12 @@ export class JobService {
 
     void this.saveFile(file, directoryPath, fileName).then(() => {
       spawn('python3', [
-        resolve(__dirname, '..', 'uploads', 'execute.py'),
-        directory,
+        `"${resolve(__dirname, '..', 'uploads', 'execute.py')}"`,
+        `"${directory}"`,
         type,
-      ]);
+      ]).on('error', function (err) {
+        Logger.error('Image generation error: ' + err);
+      });
     });
 
     const newJob = this.jobRepository.create({

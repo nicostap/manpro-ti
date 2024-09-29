@@ -32,7 +32,8 @@ export class UsersController {
   @Post('signin')
   @UseGuards(LocalGuard)
   async signIn(@Req() req: UserRequest) {
-    return { message: 'Logged in', user: req.user };
+    const { password, ...user } = req.user;
+    return { message: 'Logged in', user };
   }
 
   @Post('signout')

@@ -1,14 +1,18 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import RedisStore from 'connect-redis';
 import * as session from 'express-session';
+import * as passport from 'passport';
+import { createClient } from 'redis';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Job } from './job/entities/job.entity';
 import { JobModule } from './job/job.module';
 import { User } from './users/user.entity';
 import { UsersModule } from './users/user.module';
+import { UsersService } from './users/user.service';
 
 @Module({
   imports: [
@@ -39,16 +43,45 @@ import { UsersModule } from './users/user.module';
   providers: [AppService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
+  constructor(private readonly userService: UsersService) {}
+
+  async configure(consumer: MiddlewareConsumer) {
+    const redisClient = createClient({
+      url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+      legacyMode: false,
+    });
+    (await redisClient.connect()).on('error', function (err) {
+      Logger.error('Redis connection error: ' + err);
+      throw err;
+    });
     consumer
       .apply(
         session({
-          secret: 'your-secret-key',
+          secret: process.env.SESSION_SECRET_KEY,
           resave: false,
           saveUninitialized: false,
-          cookie: { maxAge: 3600000 },
+          cookie: {
+            sameSite: true,
+            httpOnly: false,
+            maxAge: 60000,
+          },
+          store: new RedisStore({
+            client: redisClient,
+          }),
         }),
+        passport.initialize(),
+        passport.session(),
       )
       .forRoutes('*');
+    passport.serializeUser((user: User, done) => {
+      done(null, user.id);
+    });
+    passport.deserializeUser(async (id: number, done) => {
+      const user = await this.userService.findOne(id);
+      if (!user) {
+        return done(new Error('User not found'), null);
+      }
+      done(null, user);
+    });
   }
 }

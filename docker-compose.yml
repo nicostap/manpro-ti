@@ -55,6 +55,16 @@ services:
       - ./nestjs-app/node_modules:/app/node_modules
     networks:
       - default
+    depends_on:
+      - mysql-db
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis-server
+    env_file: .env
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
 
   vite-app:
     container_name: vite-app
