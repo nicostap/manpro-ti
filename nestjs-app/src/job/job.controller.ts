@@ -27,16 +27,21 @@ export class JobController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  create(
+  async create(
     @UploadedFile() file: Express.Multer.File,
     @Body('type') type: JobType,
     @Req() req: UserRequest,
   ) {
-    return this.jobService.create(file, type, req.user.id);
+    const jobId = await this.jobService.create(file, type, req.user.id);
+    return { jobId };
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number, @Req() req: UserRequest, @Res() res: Response) {
+  async findOne(
+    @Param('id') id: number,
+    @Req() req: UserRequest,
+    @Res() res: Response,
+  ) {
     const job = await this.jobService.findOne(id);
     if (!job || job.user_id != req.user.id) {
       throw new NotFoundException('Job not found');

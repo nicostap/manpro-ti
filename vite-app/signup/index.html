@@ -70,6 +70,20 @@
     </style>
     <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
     <script>
+      async function checkUserAuthentication() {
+        const response = await fetch("http://localhost:3001/user", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user) {
+            window.location.href = "http://localhost:8000";
+          }
+        }
+      }
+      checkUserAuthentication();
+
       async function onSubmit(e) {
         e.preventDefault(); // Prevent default form submission
 
@@ -79,14 +93,10 @@
         //     return;
         // }
 
-        // Get form data
         const email = document.getElementById("email").value;
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
 
-        console.log({ email, username, password }); // Log form data
-
-        // Prepare data for submission
         const data = {
           email,
           username,
@@ -95,7 +105,6 @@
 
         try {
           const res = await fetch("http://localhost:3001/user", {
-            // Adjust the URL to match your backend endpoint
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -105,7 +114,6 @@
 
           if (res.ok) {
             alert("Form submitted successfully");
-            // Optionally redirect or clear the form here
           } else {
             const errorData = await res.json();
             alert(`Error: ${errorData.message}`);
@@ -120,7 +128,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light p-4">
       <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="#">
+        <a class="navbar-brand d-flex align-items-center" href="http://localhost:8000">
           <img
             src="/logocanvax.png"
             alt="Logo"

@@ -10,6 +10,32 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      href="https://unpkg.com/cropperjs/dist/cropper.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/cropperjs"></script>
+    <script>
+      async function checkUserAuthentication() {
+        try {
+          const response = await fetch("http://localhost:3001/user", {
+            method: "GET",
+            credentials: "include",
+          });
+          if (!response.ok) {
+            window.location.href = "http://localhost:8000/";
+          } else {
+            const data = await response.json();
+            if (!data.user) {
+              window.location.href = "http://localhost:8000/";
+            }
+          }
+        } catch (error) {
+          window.location.href = "http://localhost:8000/";
+        }
+      }
+      checkUserAuthentication();
+    </script>
   </head>
   <body>
     <div class="container-fluid px-4 px-md-5">
@@ -30,7 +56,7 @@
       <!-- header -->
       <nav class="navbar navbar-expand-lg navbar-light p-4">
         <div class="container-fluid">
-          <a class="navbar-brand d-flex align-items-center" href="#">
+          <a class="navbar-brand d-flex align-items-center" href="http://localhost:8000">
             <img
               src="/logocanvax.png"
               alt="Logo"
@@ -44,41 +70,6 @@
               CanvaX
             </h1>
           </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div
-            class="collapse navbar-collapse justify-content-end"
-            id="navbarNav"
-          >
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a
-                  class="nav-link text-dark fw-bold"
-                  href="#"
-                  style="font-size: 1.5rem"
-                  >Sign Up</a
-                >
-              </li>
-              <hr>
-              <li class="nav-item">
-                <a
-                  class="nav-link text-dark fw-bold"
-                  href="#"
-                  style="font-size: 1.5rem"
-                  >Log in</a
-                >
-              </li>
-            </ul>
-          </div>
         </div>
       </nav>
 
@@ -99,24 +90,20 @@
       <!-- Upload Section -->
       <div class="row justify-content-center my-5">
         <div class="col-md-6 col-12 px-3 px-md-5">
-          <!-- Add padding for smaller screens -->
           <label class="w-100">
-            <div class="p-4 col-12" style="background: #a848ff">
+            <div class="p-4 col-12" style="background: #a848ff" role="button">
               <div
                 class="p-4"
                 style="background: #d2a0ff; border: 1px white dotted"
               >
                 <div class="d-flex justify-content-center align-items-center">
-                  <!-- Ubah tinggi untuk menambah ruang -->
                   <img
                     src="/up.png"
                     alt="Upload Icon"
                     style="width: 80px; height: 80px"
                   />
-                  <!-- Perbesar ukuran ikon -->
                 </div>
                 <div class="text-center mt-4">
-                  <!-- Ubah margin top untuk menambah jarak -->
                   <span style="color: #fffdfd; font-size: 15px"
                     >Drop file to upload or
                   </span>
@@ -127,13 +114,14 @@
                 </div>
               </div>
             </div>
-            <input class="d-none" type="file" />
+            <input id="inputImage" class="d-none" type="file" name="file" />
           </label>
         </div>
       </div>
 
       <!-- Features Section -->
-      <div class="row text-center my-5">
+      <br /><br /><br />
+      <div class="row text-center">
         <div class="col-md-4 col-12 mb-4">
           <img src="/recyle.png" alt="" style="width: 32px; height: 32px" />
           <h4 class="mt-3" style="font-weight: bold; color: #505258">
@@ -167,5 +155,193 @@
         </div>
       </div>
     </div>
+
+    <div
+      class="modal fade rounded"
+      id="editorModal"
+      tabindex="-1"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog rounded modal-dialog-scrollable modal-dialog-centered modal-lg"
+        role="document"
+      >
+        <div class="modal-content rounded p-3">
+          <div class="overflow-hidden">
+            <img id="image" class="w-100" />
+          </div>
+          <select id="paintingStyle" required class="form-select mt-3">
+            <option value="MONET" selected>Monet</option>
+            <option value="VANGOGH">Van Gogh</option>
+            <option value="CAZENNE">Cazenne</option>
+          </select>
+          <div class="modal-footer d-flex justify-content-center gap-3">
+            <button
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              Cancel
+            </button>
+            <button id="cropButton" type="button" class="btn btn-primary">
+              Upload
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="resultModal" aria-hidden="true">
+      <div
+        class="modal-dialog rounded modal-dialog-scrollable modal-dialog-centered modal-lg"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Result</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div
+            class="modal-body d-flex justify-content-center align-items-center flex-column"
+          >
+            <div id="loadingSpinner" class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <img
+              id="fetchedImage"
+              src=""
+              alt="Fetched Image"
+              class="img-fluid"
+              style="display: none"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const inputImage = document.getElementById("inputImage");
+      const image = document.getElementById("image");
+      const cropButton = document.getElementById("cropButton");
+      const editorModal = new bootstrap.Modal(
+        document.getElementById("editorModal")
+      );
+      const resultModal = new bootstrap.Modal(
+        document.getElementById("resultModal")
+      );
+      let cropper;
+      let jobId;
+
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      const fetchedImage = document.getElementById("fetchedImage");
+
+      inputImage.addEventListener("change", function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            image.src = e.target.result;
+            editorModal.show();
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document
+        .getElementById("editorModal")
+        .addEventListener("shown.bs.modal", function () {
+          if (cropper) {
+            cropper.destroy();
+          }
+          cropper = new Cropper(image, {
+            aspectRatio: 1,
+            dragMode: "move",
+            viewMode: 3,
+            autoCropArea: 0.8,
+            responsive: true,
+            restore: false,
+            minContainerHeight: 400,
+          });
+        });
+
+      cropButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (cropper) {
+          cropper.getCroppedCanvas().toBlob(function (blob) {
+            const formData = new FormData();
+            const paintingStyle =
+              document.getElementById("paintingStyle").value;
+            formData.append("file", blob, "input.jpg");
+            formData.append("type", paintingStyle);
+            fetch("https://localhost:3001/job", {
+              method: "POST",
+              body: formData,
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                jobId = data.jobId;
+                editorModal.hide();
+                resultModal.show();
+              })
+              .catch((error) => {
+                jobId = 1;
+                editorModal.hide();
+                resultModal.show();
+              });
+          }, "image/jpeg");
+        }
+      });
+
+      async function fetchImage() {
+        loadingSpinner.style.display = "block";
+        fetchedImage.style.display = "none";
+
+        try {
+          const response = await fetch(`http://localhost:3001/job/${jobId}`);
+
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            loadingSpinner.style.display = "none";
+            fetchedImage.src = url;
+            fetchedImage.style.display = "block";
+          }
+        } catch (error) {
+          console.error("Fetch error:", error);
+          const modal = document.getElementById("resultModal");
+          if (modal.classList.contains("show")) {
+            setTimeout(fetchImage, 1000);
+          }
+        }
+      }
+
+      document
+        .getElementById("resultModal")
+        .addEventListener("shown.bs.modal", () => {
+          fetchImage();
+        });
+    </script>
   </body>
 </html>

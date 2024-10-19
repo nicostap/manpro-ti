@@ -43,7 +43,7 @@
       <!-- header -->
       <nav class="navbar navbar-expand-lg navbar-light p-4">
         <div class="container-fluid">
-          <a class="navbar-brand d-flex align-items-center" href="#">
+          <a class="navbar-brand d-flex align-items-center" href="http://localhost:8000">
             <img
               src="/logocanvax.png"
               alt="Logo"
@@ -73,20 +73,36 @@
             id="navbarNav"
           >
             <ul class="navbar-nav">
-              <li class="nav-item">
+              <li id="signUp" class="nav-item">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="#"
+                  href="http://localhost:8000/signup"
                   style="font-size: 1.5rem"
                   >Sign Up</a
                 >
               </li>
-              <li class="nav-item">
+              <li id="signIn" class="nav-item">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="#"
+                  href="http://localhost:8000/signin"
                   style="font-size: 1.5rem"
                   >Log in</a
+                >
+              </li>
+              <li id="upload" class="nav-item d-none">
+                <a
+                  class="nav-link text-dark fw-bold"
+                  href="http://localhost:8000/upload"
+                  style="font-size: 1.5rem"
+                  >Upload</a
+                >
+              </li>
+              <li id="signOut" class="nav-item d-none">
+                <a
+                  class="nav-link text-dark fw-bold"
+                  href="http://localhost:3001/user/signout"
+                  style="font-size: 1.5rem"
+                  >Sign out</a
                 >
               </li>
             </ul>
@@ -178,5 +194,29 @@
         </div>
       </div>
     </div>
+
+    <script>
+      const signInButton = document.getElementById("signIn");
+      const signUpButton = document.getElementById("signUp");
+      const uploadButton = document.getElementById("upload");
+      const signOutButton = document.getElementById("signOut");
+
+      async function checkUserAuthentication() {
+        const response = await fetch("http://localhost:3001/user", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user) {
+            uploadButton.style.display = "block";
+            signOutButton.style.display = "block";
+            signInButton.style.display = "none";
+            signUpButton.style.display = "none";
+          }
+        }
+      }
+      checkUserAuthentication();
+    </script>
   </body>
 </html>

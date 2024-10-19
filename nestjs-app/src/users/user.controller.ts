@@ -46,7 +46,8 @@ export class UsersController {
       if (err) {
         return next(err);
       }
-      res.redirect('/');
+      const baseUrl = `${req.protocol}://${req.get('host')}`;
+      res.redirect(baseUrl);
     });
     return { message: 'Logged out' };
   }
