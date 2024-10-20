@@ -11,6 +11,8 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
       body {
         max-width: 100%;
@@ -69,7 +71,79 @@
       }
     </style>
     <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light p-4">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand d-flex align-items-center"
+          href="http://localhost:8000"
+        >
+          <img
+            src="/logocanvax.png"
+            alt="Logo"
+            class="img-fluid"
+            style="width: 100px; transform: rotate(180deg)"
+          />
+          <h1
+            class="text-dark fw-bold mx-2 d-none d-sm-block"
+            style="font-size: 3rem"
+          >
+            CanvaX
+          </h1>
+        </a>
+      </div>
+    </nav>
+    <div class="container-fluid position-relative">
+      <div
+        class="blur-background"
+        style="width: 532px; height: 532px; right: 0%; top: 0%"
+      ></div>
+
+      <div class="text-center mt-5">
+        <h1 class="font-weight-bold" style="color: #2e3339">
+          Create an Account
+        </h1>
+      </div>
+
+      <form
+        onsubmit="onSubmit(event)"
+        class="mx-auto"
+        style="max-width: 320px; margin-top: 30px"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
+        <div class="input-container mt-5">
+          <input type="email" id="email" placeholder=" " required />
+          <label for="email">Email address</label>
+        </div>
+
+        <div class="input-container mt-4">
+          <input type="text" id="username" placeholder=" " required />
+          <label for="username">Username</label>
+        </div>
+
+        <div class="input-container mt-4">
+          <input type="password" id="password" placeholder=" " required />
+          <label for="password">Password</label>
+        </div>
+
+        <!-- <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div> -->
+
+        <div class="text-center mt-5">
+          <button
+            type="submit"
+            class="btn btn-primary w-100"
+            style="background: #b86bfc; border: none"
+          >
+            Continue
+          </button>
+        </div>
+      </form>
+    </div>
     <script>
+      AOS.init();
+
       async function checkUserAuthentication() {
         const response = await fetch("http://localhost:3001/user", {
           method: "GET",
@@ -114,81 +188,32 @@
           });
 
           if (res.ok) {
-            alert("Form submitted successfully");
+            Swal.fire({
+              title: "Success!",
+              text: "Account created successfuly",
+              icon: "success",
+              confirmButtonText: "OK",
+            }).then(() => {
+              window.location.href = "http://localhost:8000/signin/";
+            });
           } else {
             const errorData = await res.json();
-            alert(`Error: ${errorData.message}`);
+            Swal.fire({
+              title: "Error!",
+              text: errorData.message,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
           }
         } catch (error) {
-          console.error("Error submitting form:", error);
-          alert("An error occurred while submitting the form.");
+          Swal.fire({
+            title: "Error!",
+            text: "Sign up failed",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
       }
     </script>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light p-4">
-      <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="http://localhost:8000">
-          <img
-            src="/logocanvax.png"
-            alt="Logo"
-            class="img-fluid"
-            style="width: 100px; transform: rotate(180deg)"
-          />
-          <h1
-            class="text-dark fw-bold mx-2 d-none d-sm-block"
-            style="font-size: 3rem"
-          >
-            CanvaX
-          </h1>
-        </a>
-      </div>
-    </nav>
-    <div class="container-fluid position-relative">
-      <div
-        class="blur-background"
-        style="width: 532px; height: 532px; left: 0%; top: 0%"
-      ></div>
-
-      <div class="text-center" style="margin-top: 100px">
-        <h1 class="font-weight-bold" style="color: #2e3339">
-          Create an Account
-        </h1>
-      </div>
-
-      <form
-        onsubmit="onSubmit(event)"
-        class="mx-auto"
-        style="max-width: 320px; margin-top: 30px"
-      >
-        <div class="input-container mt-5">
-          <input type="email" id="email" placeholder=" " required />
-          <label for="email">Email address</label>
-        </div>
-
-        <div class="input-container mt-4">
-          <input type="text" id="username" placeholder=" " required />
-          <label for="username">Username</label>
-        </div>
-
-        <div class="input-container mt-4">
-          <input type="password" id="password" placeholder=" " required />
-          <label for="password">Password</label>
-        </div>
-
-        <!-- <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div> -->
-
-        <div class="text-center mt-5">
-          <button
-            type="submit"
-            class="btn btn-primary w-100"
-            style="background: #b86bfc; border: none"
-          >
-            Continue
-          </button>
-        </div>
-      </form>
-    </div>
   </body>
 </html>

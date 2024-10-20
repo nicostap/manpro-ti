@@ -9,8 +9,10 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Home</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   </head>
-  <body>
+  <body style="overflow-x: hidden;">
     <div class="position-relative container-fluid">
       <!-- Background Circles -->
       <div
@@ -18,12 +20,13 @@
         style="
           width: 532px;
           height: 532px;
-          left: 0vw;
+          right: 50vw;
           top: 120vh;
           background: radial-gradient(#d5d5ff 0%, #dd92e9 70%, #978ee2 100%);
           border-radius: 999px;
           z-index: -1;
           filter: blur(200px);
+          overflow: hidden;
         "
       ></div>
       <div
@@ -37,6 +40,7 @@
           border-radius: 9999px;
           z-index: -1;
           filter: blur(200px);
+          overflow: hidden;
         "
       ></div>
 
@@ -84,20 +88,23 @@
                   >Sign Up</a
                 >
               </li>
-              <li id="signIn" class="nav-item">
-                <a
-                  class="nav-link text-dark fw-bold"
-                  href="http://localhost:8000/signin/"
-                  style="font-size: 1.5rem"
-                  >Log in</a
-                >
-              </li>
               <li id="upload" class="nav-item" style="display: none">
                 <a
                   class="nav-link text-dark fw-bold"
                   href="http://localhost:8000/upload/"
                   style="font-size: 1.5rem"
                   >Upload</a
+                >
+              </li>
+              <li class="d-none d-lg-block" style="font-size: 2rem">
+                |
+              </li>
+              <li id="signIn" class="nav-item">
+                <a
+                  class="nav-link text-dark fw-bold"
+                  href="http://localhost:8000/signin/"
+                  style="font-size: 1.5rem"
+                  >Log in</a
                 >
               </li>
               <li id="signOut" class="nav-item" style="display: none">
@@ -116,7 +123,7 @@
       <!-- Welcome Section -->
       <div class="px-5 mt-5">
         <div class="row align-items-center px-md-5 gx-5 mx-md-5">
-          <div class="col-xl">
+          <div class="col-xl" data-aos="fade-right" data-aos-duration="1000">
             <h1 class="text-black" style="font-weight: 700; font-size: 2.5rem">
               Welcome to <span style="color: #ab5cf7">CanvaX</span>: Transform
               Your Images into Timeless Painting
@@ -159,15 +166,23 @@
               >Get started
             </a>
           </div>
-          <div class="col-xl-5 px-5 d-flex justify-content-center">
-            <img src="/example.png" style="width: 500px" />
+          <div
+            class="col-xl-5 px-5 d-flex justify-content-center"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+          >
+            <img src="/example.png" class="img-fluid" />
           </div>
         </div>
       </div>
 
       <!-- How Works -->
       <div class="container mt-5">
-        <div class="row justify-content-center text-center mt-5">
+        <div
+          class="row justify-content-center text-center mt-5"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+        >
           <div class="col-12">
             <h2 style="color: #2e3339; font-weight: 700; font-size: 40px">
               How CanvaX Works
@@ -193,7 +208,11 @@
           </p>
         </div>
         <div class="row justify-content-center my-5">
-          <div class="col-12 col-md-10">
+          <div
+            class="col-12 col-md-10"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+          >
             <img src="/miring.png" alt="" style="width: 100%; height: auto" />
           </div>
         </div>
@@ -201,6 +220,7 @@
     </div>
 
     <script>
+      AOS.init();
       const signInButton = document.getElementById("signIn");
       const signUpButton = document.getElementById("signUp");
       const uploadButton = document.getElementById("upload");

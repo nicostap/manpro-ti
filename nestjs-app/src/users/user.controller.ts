@@ -17,11 +17,15 @@ import { UsersService } from './user.service';
 
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly userService: UsersService) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return await this.usersService.create(createUserDto);
+    const user = await this.userService.findOneByEmail(createUserDto.email);
+    if (user) {
+      throw new Error('This email is already registered');
+    }
+    return await this.userService.create(createUserDto);
   }
 
   @Get()

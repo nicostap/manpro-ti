@@ -50,6 +50,7 @@
           border-radius: 9999px;
           z-index: -1;
           filter: blur(200px);
+          overflow: hidden;
         "
       ></div>
 
@@ -307,9 +308,14 @@
                 resultModal.show();
               })
               .catch((error) => {
-                jobId = 1;
-                editorModal.hide();
-                resultModal.show();
+                Swal.fire({
+                  title: "Error!",
+                  text: "An error has occured, please try again",
+                  icon: "error",
+                  confirmButtonText: "OK",
+                }).then(() => {
+                  editorModal.hide();
+                });
               });
           }, "image/jpeg");
         }
