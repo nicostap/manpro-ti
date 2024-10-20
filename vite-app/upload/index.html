@@ -191,40 +191,46 @@
               Cancel
             </button>
             <button id="cropButton" type="button" class="btn btn-primary">
-              Upload
+              Transform
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="modal fade" id="resultModal" aria-hidden="true">
-      <div
-        class="modal-dialog rounded modal-dialog-scrollable modal-dialog-centered modal-lg"
-      >
+    <div
+      class="modal fade"
+      id="resultModal"
+      tabindex="-1"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header d-flex justify-content-center">
             <h5 class="modal-title">Result</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
           <div
-            class="modal-body d-flex justify-content-center align-items-center flex-column my-5"
+            class="modal-body d-flex justify-content-center align-items-center flex-column p-5"
           >
-            <div id="loadingSpinner" class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
             <img
               id="fetchedImage"
-              src=""
+              src="/loading.svg"
               alt="Fetched Image"
               class="img-fluid"
-              style="display: none"
             />
+            <div id="loadingSpinner" class="spinner-border mt-5" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <button
+              id="completeButton"
+              class="btn btn-success"
+              data-bs-dismiss="modal"
+              style="display: none"
+            >
+              Complete
+            </button>
           </div>
         </div>
       </div>
@@ -245,6 +251,7 @@
 
       const loadingSpinner = document.getElementById("loadingSpinner");
       const fetchedImage = document.getElementById("fetchedImage");
+      const completeButton = document.getElementById("completeButton");
 
       inputImage.addEventListener("change", function (event) {
         const file = event.target.files[0];
@@ -314,7 +321,8 @@
 
       async function fetchImage() {
         loadingSpinner.style.display = "block";
-        fetchedImage.style.display = "none";
+        completeButton.style.display = "none";
+        fetchedImage.src = "/loading.svg";
 
         try {
           const response = await fetch(`http://localhost:3001/job/${jobId}`, {
@@ -325,8 +333,8 @@
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
             loadingSpinner.style.display = "none";
+            completeButton.style.display = "block";
             fetchedImage.src = url;
-            fetchedImage.style.display = "block";
           } else {
             const modal = document.getElementById("resultModal");
             if (modal.classList.contains("show")) {

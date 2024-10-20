@@ -12,7 +12,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   </head>
-  <body style="overflow-x: hidden;">
+  <body style="overflow-x: hidden">
     <div class="position-relative container-fluid">
       <!-- Background Circles -->
       <div
@@ -96,9 +96,7 @@
                   >Upload</a
                 >
               </li>
-              <li class="d-none d-lg-block" style="font-size: 2rem">
-                |
-              </li>
+              <li class="d-none d-lg-block" style="font-size: 2rem">|</li>
               <li id="signIn" class="nav-item">
                 <a
                   class="nav-link text-dark fw-bold"
@@ -163,7 +161,8 @@
                 font-weight: 700;
               "
               href=""
-              >Get started
+            >
+              Get started
             </a>
           </div>
           <div
@@ -177,6 +176,7 @@
       </div>
 
       <!-- How Works -->
+      <br /><br /><br />
       <div class="container mt-5">
         <div
           class="row justify-content-center text-center mt-5"
@@ -228,27 +228,35 @@
       const getStartedButton = document.getElementById("getStarted");
 
       async function checkUserAuthentication() {
-        const response = await fetch("http://localhost:3001/user", {
-          method: "GET",
-          credentials: "include",
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data.user) {
-            uploadButton.style.display = "block";
-            signOutButton.style.display = "block";
-            signInButton.style.display = "none";
-            signUpButton.style.display = "none";
-            getStartedButton.setAttribute(
-              "href",
-              "http://localhost:8000/upload/"
-            );
-          } else {
-            getStartedButton.setAttribute(
-              "href",
-              "http://localhost:8000/signup/"
-            );
+        try {
+          const response = await fetch("http://localhost:3001/user", {
+            method: "GET",
+            credentials: "include",
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.user) {
+              uploadButton.style.display = "block";
+              signOutButton.style.display = "block";
+              signInButton.style.display = "none";
+              signUpButton.style.display = "none";
+              getStartedButton.setAttribute(
+                "href",
+                "http://localhost:8000/upload/"
+              );
+              return;
+            } else {
+              getStartedButton.setAttribute(
+                "href",
+                "http://localhost:8000/signup/"
+              );
+            }
           }
+        } catch (error) {
+          getStartedButton.setAttribute(
+            "href",
+            "http://localhost:8000/signup/"
+          );
         }
       }
       checkUserAuthentication();
