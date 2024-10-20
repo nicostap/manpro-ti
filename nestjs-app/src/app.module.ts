@@ -31,7 +31,7 @@ import { UsersService } from './users/user.service';
         entities: [User, Job],
         synchronize: false,
         extra: {
-          connectionLimit: 10,
+          connectionLimit: 100,
         },
       }),
     }),
@@ -63,7 +63,7 @@ export class AppModule {
           cookie: {
             sameSite: true,
             httpOnly: false,
-            maxAge: 60000,
+            maxAge: 3600 * 1000,
           },
           store: new RedisStore({
             client: redisClient,

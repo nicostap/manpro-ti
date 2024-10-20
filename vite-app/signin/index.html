@@ -55,7 +55,7 @@
 
       .input-container input:focus + label,
       .input-container input:not(:placeholder-shown) + label {
-        top: -20px;
+        top: -10px;
         font-size: 12px;
         color: #b86bfc;
       }
@@ -98,6 +98,7 @@
               "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
+            credentials: "include",
           });
 
           if (res.ok) {
@@ -152,17 +153,17 @@
         class="mx-auto"
         style="max-width: 320px; margin-top: 30px"
       >
-        <div class="input-container">
+        <div class="input-container mt-5">
           <input type="email" id="email" placeholder=" " required />
           <label for="email">Email address</label>
         </div>
 
-        <div class="input-container">
+        <div class="input-container mt-4">
           <input type="password" id="password" placeholder=" " required />
           <label for="password">Password</label>
         </div>
 
-        <div class="text-center mt-3">
+        <div class="text-center mt-5">
           <button
             type="submit"
             class="btn btn-primary w-100"

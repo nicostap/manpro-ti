@@ -8,7 +8,10 @@ declare const module: any;
 async function bootstrap() {
   const port = process.env.NESTJS_APP_DOCKER_PORT;
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:8000',
+    credentials: true,
+  });
   app.useStaticAssets(join(__dirname, '..', 'uploads'));
   await app.listen(port).then(() => {
     console.log(`Server started at http://localhost:${port}`);

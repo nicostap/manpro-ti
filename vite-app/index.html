@@ -43,7 +43,10 @@
       <!-- header -->
       <nav class="navbar navbar-expand-lg navbar-light p-4">
         <div class="container-fluid">
-          <a class="navbar-brand d-flex align-items-center" href="http://localhost:8000">
+          <a
+            class="navbar-brand d-flex align-items-center"
+            href="http://localhost:8000"
+          >
             <img
               src="/logocanvax.png"
               alt="Logo"
@@ -76,7 +79,7 @@
               <li id="signUp" class="nav-item">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:8000/signup"
+                  href="http://localhost:8000/signup/"
                   style="font-size: 1.5rem"
                   >Sign Up</a
                 >
@@ -84,23 +87,23 @@
               <li id="signIn" class="nav-item">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:8000/signin"
+                  href="http://localhost:8000/signin/"
                   style="font-size: 1.5rem"
                   >Log in</a
                 >
               </li>
-              <li id="upload" class="nav-item d-none">
+              <li id="upload" class="nav-item" style="display: none">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:8000/upload"
+                  href="http://localhost:8000/upload/"
                   style="font-size: 1.5rem"
                   >Upload</a
                 >
               </li>
-              <li id="signOut" class="nav-item d-none">
+              <li id="signOut" class="nav-item" style="display: none">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:3001/user/signout"
+                  href="http://localhost:3001/user/signout/"
                   style="font-size: 1.5rem"
                   >Sign out</a
                 >
@@ -134,6 +137,7 @@
               essence of classic art styles.
             </div>
             <a
+              id="getStarted"
               class="btn mt-4 mb-5"
               style="
                 padding: 10px 20px;
@@ -151,6 +155,7 @@
                 font-family: Inter;
                 font-weight: 700;
               "
+              href=""
               >Get started
             </a>
           </div>
@@ -200,6 +205,7 @@
       const signUpButton = document.getElementById("signUp");
       const uploadButton = document.getElementById("upload");
       const signOutButton = document.getElementById("signOut");
+      const getStartedButton = document.getElementById("getStarted");
 
       async function checkUserAuthentication() {
         const response = await fetch("http://localhost:3001/user", {
@@ -213,6 +219,15 @@
             signOutButton.style.display = "block";
             signInButton.style.display = "none";
             signUpButton.style.display = "none";
+            getStartedButton.setAttribute(
+              "href",
+              "http://localhost:8000/upload/"
+            );
+          } else {
+            getStartedButton.setAttribute(
+              "href",
+              "http://localhost:8000/signup/"
+            );
           }
         }
       }
