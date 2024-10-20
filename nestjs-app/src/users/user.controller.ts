@@ -40,7 +40,7 @@ export class UsersController {
     return { message: 'Logged in', user };
   }
 
-  @Post('signout')
+  @Get('signout')
   async signOut(
     @Req() req: UserRequest,
     @Res() res: Response,
@@ -50,7 +50,7 @@ export class UsersController {
       if (err) {
         return next(err);
       }
-      const baseUrl = `${req.protocol}://${req.get('host')}`;
+      const baseUrl =  'http://localhost:8000';
       res.redirect(baseUrl);
     });
     return { message: 'Logged out' };

@@ -29,8 +29,8 @@ def execute(loader, gen_H):
     use_amp = torch.cuda.is_available()
     with torch.cuda.amp.autocast() if use_amp else torch.enable_grad():
         fake_painting = gen_H(image)
-    save_image(fake_painting * 0.5 + 0.5, f"{data_dir}/result.png")
-    denoise_image(f"{data_dir}/result.png")
+    save_image(fake_painting * 0.5 + 0.5, f"{data_dir}/progress.png")
+    denoise_image(f"{data_dir}/progress.png")
 
 def main():
     gen_H = Generator(img_channels=3, num_residuals=9).to(config.DEVICE)
@@ -41,7 +41,7 @@ def main():
 
     execute(dataloader, gen_H)
 
-    image = Image.open(f"{data_dir}/result.png")
+    image = Image.open(f"{data_dir}/progress.png")
 
     model = MsrnModel.from_pretrained('eugenesiow/msrn', scale=2)
     inputs = ImageLoader.load_image(image)

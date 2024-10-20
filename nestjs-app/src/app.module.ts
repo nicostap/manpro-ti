@@ -31,7 +31,7 @@ import { UsersService } from './users/user.service';
         entities: [User, Job],
         synchronize: false,
         extra: {
-          connectionLimit: 100,
+          connectionLimit: 150,
         },
       }),
     }),

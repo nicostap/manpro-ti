@@ -5,4 +5,5 @@ import copy
 
 def load_checkpoint(checkpoint_file, model):
     checkpoint = torch.load(checkpoint_file, map_location=config.DEVICE)
+    model.eval()
     model.load_state_dict(checkpoint["state_dict"])
