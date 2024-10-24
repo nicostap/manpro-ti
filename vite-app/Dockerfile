@@ -8,13 +8,13 @@ RUN mkdir -p /app
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the /app working directory
-COPY package*.json /app
+COPY package*.json .
 
 # Install dependencies in /app
 RUN npm install
 
 # Copy the rest of our Vite folder into /app
-COPY . /app
+COPY . .
 
 # Ensure port 8000 is accessible to our system
 EXPOSE 8000

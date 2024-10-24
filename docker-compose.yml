@@ -52,7 +52,7 @@ services:
     tty: true
     volumes:
       - ./nestjs-app:/app
-      - ./nestjs-app/node_modules:/app/node_modules
+      - nestjs-node-modules:/app/node_modules
     networks:
       - default
     depends_on:
@@ -79,9 +79,11 @@ services:
     tty: true
     volumes:
       - ./vite-app:/app
-      - ./vite-app/node_modules:/app/node_modules
+      - vite-node-modules:/app/node_modules
     networks:
       - default
 
 volumes:
   mysql-volume:
+  vite-node-modules:
+  nestjs-node-modules:
