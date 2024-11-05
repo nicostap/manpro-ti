@@ -298,6 +298,9 @@
               credentials: "include",
             })
               .then((response) => {
+                cropper = null;
+                image.src = "";
+                inputImage.value = "";
                 return response.json();
               })
               .then((data) => {
@@ -335,6 +338,7 @@
             loadingSpinner.style.display = "none";
             completeButton.style.display = "block";
             fetchedImage.src = url;
+            jobId = null;
           } else {
             const modal = document.getElementById("resultModal");
             if (modal.classList.contains("show")) {

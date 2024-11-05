@@ -36,6 +36,11 @@ export class JobController {
     return { jobId };
   }
 
+  @Get()
+  async getJobIds(@Req() req: UserRequest) {
+    return await this.jobService.findCompletedJobsByUserId(req.user.id);
+  }
+
   @Get(':id')
   async findOne(
     @Param('id') id: number,

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+      body {
+        max-width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+      }
+
+      .blur-background {
+        position: absolute;
+        background: radial-gradient(#d5d5ff 0%, #dd92e9 50%, #978ee2 100%);
+        border-radius: 999px;
+        filter: blur(200px);
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light p-4">
+      <div class="container-fluid justify-content-center">
+        <a
+          class="navbar-brand d-flex align-items-center"
+          href="http://localhost:8000"
+        >
+          <img
+            src="/logocanvax.png"
+            alt="Logo"
+            class="img-fluid"
+            style="width: 100px; transform: rotate(180deg)"
+          />
+          <h1
+            class="text-dark fw-bold mx-2 d-none d-sm-block"
+            style="font-size: 3rem"
+          >
+            CanvaX
+          </h1>
+        </a>
+      </div>
+    </nav>
+
+    <div class="container-fluid position-relative">
+      <div id="job-container" class="row gy-4"></div>
+    </div>
+
+    <script>
+      AOS.init();
+
+      async function checkUserAuthentication() {
+        const response = await fetch("http://localhost:3001/user", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (!data.user) {
+            window.location.href = "http://localhost:8000";
+          }
+        }
+      }
+      checkUserAuthentication();
+
+      async function fetchJobIds() {
+        try {
+          const response = await fetch("http://localhost:3001/job", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const jobIds = await response.json();
+          jobIds.forEach((jobId) => {
+            createJobCard(jobId);
+          });
+        } catch (error) {
+          console.error("Error fetching job IDs:", error);
+        }
+      }
+
+      async function createJobCard(jobId) {
+        const card = document.createElement("div");
+        card.className = "col-md-4";
+
+        const cardHtml = `
+        <div class="card">
+          <img src="http://localhost:3001/job/${jobId}" class="card-img-top" alt="Job Image ${jobId}">
+          <div class="card-body">
+            <h5 class="card-title">Job ID: ${jobId}</h5>
+          </div>
+        </div>
+      `;
+        card.innerHTML = cardHtml;
+        document.getElementById("job-container").appendChild(card);
+      }
+
+      document.addEventListener("DOMContentLoaded", fetchJobIds);
+    </script>
+  </body>
+</html>

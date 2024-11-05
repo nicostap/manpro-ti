@@ -47,6 +47,10 @@ export class JobService {
     return this.jobRepository.findOne({ where: { id } });
   }
 
+  findCompletedJobsByUserId(user_id: number) {
+    return this.jobRepository.find({ where: { user_id, status: 'COMPLETE' } });
+  }
+
   private async saveFile(
     file: Express.Multer.File,
     directoryPath: string,
