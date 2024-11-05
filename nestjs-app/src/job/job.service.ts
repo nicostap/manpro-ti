@@ -38,6 +38,11 @@ export class JobService {
     return savedJob.id;
   }
 
+  async updateStatus(job: Job) {
+    job.status = 'COMPLETE';
+    await this.jobRepository.save(job);
+  }
+
   findOne(id: number) {
     return this.jobRepository.findOne({ where: { id } });
   }

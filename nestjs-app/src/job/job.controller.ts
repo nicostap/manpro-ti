@@ -55,6 +55,7 @@ export class JobController {
     );
 
     if (fs.existsSync(imagePath)) {
+      void this.jobService.updateStatus(job);
       return res.sendFile(imagePath);
     } else {
       throw new NotFoundException('Job is still pending');
