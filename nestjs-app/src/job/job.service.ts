@@ -47,8 +47,15 @@ export class JobService {
     return this.jobRepository.findOne({ where: { id } });
   }
 
-  findCompletedJobsByUserId(user_id: number) {
-    return this.jobRepository.find({ where: { user_id, status: 'COMPLETE' } });
+  async findCompletedJobsByUserId(user_id: number) {
+    const jobs = await this.jobRepository.find({
+      where: { user_id, status: 'COMPLETE' },
+    });
+    jobs.map((job) => {
+      job.user = undefined;
+      return job;
+    });
+    return jobs;
   }
 
   private async saveFile(
