@@ -50,7 +50,7 @@ export class UsersController {
       if (err) {
         return next(err);
       }
-      const baseUrl =  'http://localhost:8000';
+      const baseUrl = `http://${process.env.VITE_FRONTEND_URL}`;
       res.redirect(baseUrl);
     });
     return { message: 'Logged out' };

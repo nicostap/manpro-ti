@@ -42,7 +42,7 @@
       <div class="container-fluid justify-content-center">
         <a
           class="navbar-brand d-flex align-items-center"
-          href="http://localhost:8000"
+          href="http://%VITE_FRONTEND_URL%"
         >
           <img
             src="/logocanvax.png"
@@ -82,67 +82,77 @@
       </div>
     </div>
 
-    <script>
-            AOS.init();
+    <script type="module">
+      AOS.init();
 
-            async function checkUserAuthentication() {
-              const response = await fetch("http://localhost:3001/user", {
-                method: "GET",
-                credentials: "include",
-              });
-              if (response.ok) {
-                const data = await response.json();
-                if (!data.user) {
-                  window.location.href = "http://localhost:8000";
-                }
-              }
+      async function checkUserAuthentication() {
+        const response = await fetch(
+          `http://${import.meta.env.VITE_BACKEND_URL}/user`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          if (!data.user) {
+            window.location.href = `http://${
+              import.meta.env.VITE_FRONTEND_URL
+            }`;
+          }
+        }
+      }
+      checkUserAuthentication();
+
+      async function fetchJobIds() {
+        try {
+          const response = await fetch(
+            `http://${import.meta.env.VITE_BACKEND_URL}/job`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
             }
-            checkUserAuthentication();
+          );
+          const jobs = await response.json();
+          jobs.forEach((job) => {
+            createJobCard(job);
+          });
+        } catch (error) {
+          console.error("Error fetching job IDs:", error);
+        }
+      }
 
-            async function fetchJobIds() {
-              try {
-                const response = await fetch("http://localhost:3001/job", {
-                  method: "GET",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  credentials: "include",
-                });
-                const jobs = await response.json();
-                jobs.forEach((job) => {
-                  createJobCard(job);
-                });
-              } catch (error) {
-                console.error("Error fetching job IDs:", error);
-              }
-            }
+      async function createJobCard(job) {
+        const jobId = job.id;
+        const card = document.createElement("div");
+        const date = new Date(job.created_date);
+        card.className = "col-md-3";
+        const rg = /(^\w{1}|\.\s*\w{1})/gi;
 
-            async function createJobCard(job) {
-              const jobId = job.id;
-              const card = document.createElement("div");
-              const date = new Date(job.created_date);
-              card.className = "col-md-3";
-              const rg = /(^\w{1}|\.\s*\w{1})/gi;
-
-              const cardHtml = `
+        const cardHtml = `
                     <div class="card h-10">
                       <div style="border-radius: 20%">
-                        <img src="http://localhost:3001/job/${jobId}" class="card-img-top" alt="Job Image ${jobId}">
+                        <img src="http://${
+                          import.meta.env.VITE_BACKEND_URL
+                        }/job/${jobId}" class="card-img-top" alt="Job Image ${jobId}">
                         <div class="card-body">
                           <p class="ml-4 m-0 fw-bold">
-                            ${job.type.replace(rg, function(toReplace) {
-                                return toReplace.toUpperCase();
+                            ${job.type.replace(rg, function (toReplace) {
+                              return toReplace.toUpperCase();
                             })}
                           </p>
                         </div>
                       </div>
                     </div>
                   `;
-              card.innerHTML = cardHtml;
-              document.getElementById("job-container").appendChild(card);
-            }
+        card.innerHTML = cardHtml;
+        document.getElementById("job-container").appendChild(card);
+      }
 
-            document.addEventListener("DOMContentLoaded", fetchJobIds);
+      document.addEventListener("DOMContentLoaded", fetchJobIds);
     </script>
   </body>
 </html>

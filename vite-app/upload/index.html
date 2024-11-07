@@ -15,23 +15,30 @@
       rel="stylesheet"
     />
     <script src="https://unpkg.com/cropperjs"></script>
-    <script>
+    <script type="module">
       async function checkUserAuthentication() {
         try {
-          const response = await fetch("http://localhost:3001/user", {
-            method: "GET",
-            credentials: "include",
-          });
+          const response = await fetch(
+            `http://${import.meta.env.VITE_BACKEND_URL}/user`,
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
           if (!response.ok) {
-            window.location.href = "http://localhost:8000/";
+            window.location.href = `http://${
+              import.meta.env.VITE_FRONTEND_URL
+            }/`;
           } else {
             const data = await response.json();
             if (!data.user) {
-              window.location.href = "http://localhost:8000/";
+              window.location.href = `http://${
+                import.meta.env.VITE_FRONTEND_URL
+              }/`;
             }
           }
         } catch (error) {
-          window.location.href = "http://localhost:8000/";
+          window.location.href = `http://${import.meta.env.VITE_FRONTEND_URL}/`;
         }
       }
       checkUserAuthentication();
@@ -59,7 +66,7 @@
         <div class="container-fluid justify-content-center">
           <a
             class="navbar-brand d-flex align-items-center"
-            href="http://localhost:8000"
+            href="http://%VITE_FRONTEND_URL%"
           >
             <img
               src="/logocanvax.png"
@@ -236,7 +243,7 @@
       </div>
     </div>
 
-    <script>
+    <script type="module">
       const inputImage = document.getElementById("inputImage");
       const image = document.getElementById("image");
       const cropButton = document.getElementById("cropButton");
@@ -292,7 +299,7 @@
               document.getElementById("paintingStyle").value;
             formData.append("file", blob, "input.jpg");
             formData.append("type", paintingStyle);
-            fetch("http://localhost:3001/job", {
+            fetch(`http://${import.meta.env.VITE_BACKEND_URL}/job`, {
               method: "POST",
               body: formData,
               credentials: "include",
@@ -328,9 +335,12 @@
         fetchedImage.src = "/loading.svg";
 
         try {
-          const response = await fetch(`http://localhost:3001/job/${jobId}`, {
-            credentials: "include",
-          });
+          const response = await fetch(
+            `http://${import.meta.env.VITE_BACKEND_URL}/job/${jobId}`,
+            {
+              credentials: "include",
+            }
+          );
 
           if (response.ok) {
             const blob = await response.blob();

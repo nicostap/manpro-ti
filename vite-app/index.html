@@ -49,7 +49,7 @@
         <div class="container-fluid">
           <a
             class="navbar-brand d-flex align-items-center"
-            href="http://localhost:8000"
+            href="http://%VITE_FRONTEND_URL%"
           >
             <img
               src="/logocanvax.png"
@@ -83,7 +83,7 @@
               <li id="signUp" class="nav-item">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:8000/signup/"
+                  href="http://%VITE_FRONTEND_URL%/signup/"
                   style="font-size: 1.5rem"
                   >Sign Up</a
                 >
@@ -91,7 +91,7 @@
               <li id="upload" class="nav-item" style="display: none">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:8000/upload/"
+                  href="http://%VITE_FRONTEND_URL%/upload/"
                   style="font-size: 1.5rem"
                   >Upload</a
                 >
@@ -102,7 +102,7 @@
               <li id="history" class="nav-item" style="display: none">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:8000/history/"
+                  href="http://%VITE_FRONTEND_URL%/history/"
                   style="font-size: 1.5rem"
                   >History</a
                 >
@@ -111,7 +111,7 @@
               <li id="signIn" class="nav-item">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:8000/signin/"
+                  href="http://%VITE_FRONTEND_URL%/signin/"
                   style="font-size: 1.5rem"
                   >Log in</a
                 >
@@ -119,7 +119,7 @@
               <li id="signOut" class="nav-item" style="display: none">
                 <a
                   class="nav-link text-dark fw-bold"
-                  href="http://localhost:3001/user/signout"
+                  href="http://%VITE_BACKEND_URL%/user/signout"
                   style="font-size: 1.5rem"
                   >Sign out</a
                 >
@@ -230,7 +230,7 @@
       </div>
     </div>
 
-    <script>
+    <script type="module">
       AOS.init();
       const signInButton = document.getElementById("signIn");
       const signUpButton = document.getElementById("signUp");
@@ -242,7 +242,7 @@
 
       async function checkUserAuthentication() {
         try {
-          const response = await fetch("http://localhost:3001/user", {
+          const response = await fetch(`http://${import.meta.env.VITE_BACKEND_URL}/user`, {
             method: "GET",
             credentials: "include",
           });
@@ -257,20 +257,20 @@
               signUpButton.style.display = "none";
               getStartedButton.setAttribute(
                 "href",
-                "http://localhost:8000/upload/"
+                `http://${import.meta.env.VITE_FRONTEND_URL}/upload/`
               );
               return;
             } else {
               getStartedButton.setAttribute(
                 "href",
-                "http://localhost:8000/signup/"
+                `http://${import.meta.env.VITE_FRONTEND_URL}/signup/`
               );
             }
           }
         } catch (error) {
           getStartedButton.setAttribute(
             "href",
-            "http://localhost:8000/signup/"
+            `http://${import.meta.env.VITE_FRONTEND_URL}/signup/`
           );
         }
       }

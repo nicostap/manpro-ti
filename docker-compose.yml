@@ -74,10 +74,11 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - 8000:8000
+      - ${VITE_APP_LOCAL_PORT}:${VITE_APP_DOCKER_PORT}
     stdin_open: true
     tty: true
     volumes:
+      - .env:/app/.env
       - ./vite-app:/app
       - vite-node-modules:/app/node_modules
     networks:
