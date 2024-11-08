@@ -14,12 +14,6 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
-      body {
-        max-width: 100%;
-        max-height: 100%;
-        overflow: hidden;
-      }
-
       .blur-background {
         position: absolute;
         background: radial-gradient(#d5d5ff 0%, #dd92e9 50%, #978ee2 100%);
@@ -62,14 +56,10 @@
 
     <div
       class="blur-background"
-      style="width: 532px; height: 532px; left: 70%; top: 80%"
-    ></div>
-    <div
-      class="blur-background"
       style="width: 532px; height: 532px; right: 70%; bottom: 80%"
     ></div>
 
-    <div class="px-xl-5 mt-5">
+    <div class="px-xl-5 my-5">
       <div class="px-xl-5">
         <div class="px-xl-5">
           <div class="container-fluid position-relative">
@@ -77,6 +67,11 @@
               id="job-container"
               class="row gy-4 px-5 justify-content-center"
             ></div>
+            <div id="loading" class="text-center my-4 d-none">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -84,6 +79,10 @@
 
     <script type="module">
       AOS.init();
+
+      let currentPage = 1;
+      const jobsPerPage = 12;
+      let isFetching = false;
 
       async function checkUserAuthentication() {
         const response = await fetch(
@@ -104,10 +103,16 @@
       }
       checkUserAuthentication();
 
-      async function fetchJobIds() {
+      async function fetchJobIds(page) {
+        if (isFetching) return;
+        isFetching = true;
+        document.getElementById("loading").classList.remove("d-none");
+
         try {
           const response = await fetch(
-            `http://${import.meta.env.VITE_BACKEND_URL}/job`,
+            `http://${
+              import.meta.env.VITE_BACKEND_URL
+            }/job?page=${page}&limit=${jobsPerPage}`,
             {
               method: "GET",
               headers: {
@@ -120,8 +125,15 @@
           jobs.forEach((job) => {
             createJobCard(job);
           });
+          isFetching = false;
+          document.getElementById("loading").classList.add("d-none");
+
+          if (jobs.length < jobsPerPage) {
+            window.removeEventListener("scroll", handleScroll);
+          }
         } catch (error) {
           console.error("Error fetching job IDs:", error);
+          isFetching = false;
         }
       }
 
@@ -130,20 +142,32 @@
         const card = document.createElement("div");
         const date = new Date(job.created_date);
         card.className = "col-md-3";
-        const rg = /(^\w{1}|\.\s*\w{1})/gi;
 
         const cardHtml = `
                     <div class="card h-10">
                       <div style="border-radius: 20%">
-                        <img src="http://${
-                          import.meta.env.VITE_BACKEND_URL
-                        }/job/${jobId}" class="card-img-top" alt="Job Image ${jobId}">
+                        <div class="position-relative w-100" style="aspect-ratio : 1">
+                          <div class="position-absolute spinner-border z-0 top-50 start-50 translate-middle" role="status">
+                            <span class="sr-only top-0"></span>
+                          </div>
+                          <img src="http://${
+                            import.meta.env.VITE_BACKEND_URL
+                          }/job/${jobId}" class="position-absolute card-img-top z-1" alt="Job Image ${jobId}">
+                        </div>
                         <div class="card-body">
-                          <p class="ml-4 m-0 fw-bold">
-                            ${job.type.replace(rg, function (toReplace) {
-                              return toReplace.toUpperCase();
+                          <h6 class="ml-4 m-0 fw-bold">
+                            ${
+                              job.type.substr(0, 1) +
+                              job.type.substr(1, job.type.length).toLowerCase()
+                            }
+                          </h6>
+                          <small class="ml-4 m-0">
+                            ${date.toLocaleDateString("en-GB", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
                             })}
-                          </p>
+                          </small>
                         </div>
                       </div>
                     </div>
@@ -152,7 +176,20 @@
         document.getElementById("job-container").appendChild(card);
       }
 
-      document.addEventListener("DOMContentLoaded", fetchJobIds);
+      function handleScroll() {
+        if (
+          window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 500
+        ) {
+          currentPage++;
+          fetchJobIds(currentPage);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        fetchJobIds(currentPage);
+        window.addEventListener("scroll", handleScroll);
+      });
     </script>
   </body>
 </html>

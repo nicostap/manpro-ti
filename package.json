@@ -8,6 +8,8 @@
     "start:db": "docker compose up mysql-db phpmyadmin",
     "start:back": "docker compose up nestjs-app redis --renew-anon-volumes",
     "start:front": "docker compose up vite-app --renew-anon-volumes",
+    "start": "docker compose up -d",
+    "stop": "docker compose down",
     "clean": "docker compose down -v"
   },
   "author": "",

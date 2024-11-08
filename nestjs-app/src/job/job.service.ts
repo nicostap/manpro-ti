@@ -47,9 +47,17 @@ export class JobService {
     return this.jobRepository.findOne({ where: { id } });
   }
 
-  async findCompletedJobsByUserId(user_id: number) {
+  async findCompletedJobsByUserId(
+    user_id: number,
+    page: number = 0,
+    limit: number = 100,
+  ) {
+    const skip = (page - 1) * limit;
     const jobs = await this.jobRepository.find({
       where: { user_id, status: 'COMPLETE' },
+      take: limit,
+      skip: skip,
+      order: { created_date: 'DESC' },
     });
     jobs.map((job) => {
       job.user = undefined;

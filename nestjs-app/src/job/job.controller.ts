@@ -5,6 +5,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Query,
   Req,
   Res,
   UploadedFile,
@@ -37,8 +38,12 @@ export class JobController {
   }
 
   @Get()
-  async getJobIds(@Req() req: UserRequest) {
-    return await this.jobService.findCompletedJobsByUserId(req.user.id);
+  async getJobIds(
+    @Req() req: UserRequest,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 12,
+  ) {
+    return await this.jobService.findCompletedJobsByUserId(req.user.id, page, limit);
   }
 
   @Get(':id')

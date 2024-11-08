@@ -275,12 +275,16 @@
 
       document
         .getElementById("editorModal")
+        .addEventListener("hidden.bs.modal", function () {
+          cropper.destroy();
+          image.src = "";
+          inputImage.value = "";
+        });
+
+      document
+        .getElementById("editorModal")
         .addEventListener("shown.bs.modal", function () {
-          if (cropper) {
-            cropper.destroy();
-          }
           cropper = new Cropper(image, {
-            aspectRatio: 1,
             dragMode: "move",
             viewMode: 3,
             autoCropArea: 0.8,
@@ -305,9 +309,6 @@
               credentials: "include",
             })
               .then((response) => {
-                cropper = null;
-                image.src = "";
-                inputImage.value = "";
                 return response.json();
               })
               .then((data) => {
@@ -367,6 +368,14 @@
         .getElementById("resultModal")
         .addEventListener("shown.bs.modal", () => {
           fetchImage();
+        });
+
+      document
+        .getElementById("resultModal")
+        .addEventListener("hidden.bs.modal", () => {
+          loadingSpinner.style.display = "block";
+          completeButton.style.display = "none";
+          fetchedImage.src = "/loading.svg";
         });
     </script>
   </body>

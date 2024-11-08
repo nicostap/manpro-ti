@@ -14,7 +14,6 @@
   </head>
   <body style="overflow-x: hidden">
     <div class="position-relative container-fluid">
-      <!-- Background Circles -->
       <div
         class="position-absolute"
         style="
@@ -129,7 +128,6 @@
         </div>
       </nav>
 
-      <!-- Welcome Section -->
       <div class="px-5 mt-5">
         <div class="row align-items-center px-md-5 gx-5 mx-md-5">
           <div class="col-xl" data-aos="fade-right" data-aos-duration="1000">
@@ -186,7 +184,6 @@
         </div>
       </div>
 
-      <!-- How Works -->
       <br /><br /><br />
       <div class="container mt-5">
         <div
@@ -242,10 +239,13 @@
 
       async function checkUserAuthentication() {
         try {
-          const response = await fetch(`http://${import.meta.env.VITE_BACKEND_URL}/user`, {
-            method: "GET",
-            credentials: "include",
-          });
+          const response = await fetch(
+            `http://${import.meta.env.VITE_BACKEND_URL}/user`,
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
           if (response.ok) {
             const data = await response.json();
             if (data.user) {
