@@ -14,6 +14,10 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
+      body {
+        overflow-x: hidden;
+      }
+
       .blur-background {
         position: absolute;
         background: radial-gradient(#d5d5ff 0%, #dd92e9 50%, #978ee2 100%);
@@ -59,13 +63,13 @@
       style="width: 532px; height: 532px; right: 70%; bottom: 80%"
     ></div>
 
-    <div class="px-xl-5 my-5">
+    <div class="px-xl-5 my-5 pb-5">
       <div class="px-xl-5">
         <div class="px-xl-5">
           <div class="container-fluid position-relative">
             <div
               id="job-container"
-              class="row gy-4 px-5 justify-content-center"
+              class="row g-5 px-5 justify-content-center"
             ></div>
             <div id="loading" class="text-center my-4 d-none">
               <div class="spinner-border" role="status">
@@ -104,8 +108,11 @@
       checkUserAuthentication();
 
       async function fetchJobIds(page) {
-        if (isFetching) return;
+        if (isFetching) {
+          return;
+        }
         isFetching = true;
+        window.removeEventListener("scroll", handleScroll);
         document.getElementById("loading").classList.remove("d-none");
 
         try {
@@ -128,8 +135,8 @@
           isFetching = false;
           document.getElementById("loading").classList.add("d-none");
 
-          if (jobs.length < jobsPerPage) {
-            window.removeEventListener("scroll", handleScroll);
+          if (jobs.length >= jobsPerPage) {
+            window.addEventListener("scroll", handleScroll, false);
           }
         } catch (error) {
           console.error("Error fetching job IDs:", error);
@@ -179,7 +186,7 @@
       function handleScroll() {
         if (
           window.innerHeight + window.scrollY >=
-          document.body.offsetHeight - 500
+          document.body.offsetHeight - 100
         ) {
           currentPage++;
           fetchJobIds(currentPage);
@@ -188,7 +195,6 @@
 
       document.addEventListener("DOMContentLoaded", () => {
         fetchJobIds(currentPage);
-        window.addEventListener("scroll", handleScroll);
       });
     </script>
   </body>
