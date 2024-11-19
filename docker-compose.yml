@@ -83,6 +83,8 @@ services:
       - vite-node-modules:/app/node_modules
     networks:
       - default
+    depends_on:
+      - nestjs-app
 
 volumes:
   mysql-volume:
