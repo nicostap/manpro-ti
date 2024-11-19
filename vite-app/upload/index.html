@@ -43,6 +43,73 @@
       }
       checkUserAuthentication();
     </script>
+    <style>
+      .custom-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .custom-btn.primary {
+        background-color: #4caf50; /* Green */
+        color: white;
+      }
+
+      .custom-btn.primary:hover {
+        background-color: #347637;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .custom-btn.danger {
+        background-color: #f44336; /* Red */
+        color: white;
+      }
+
+      .custom-btn.danger:hover {
+        background-color: #912120;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .custom-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .custom-select:hover {
+        background-color: #e9ecef;
+      }
+
+      .custom-select:focus {
+        outline: none;
+        border-color: #0056b3;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      }
+
+      .upload-section {
+        background: #d2a0ff;
+        transition: 0.2s ease;
+      }
+
+      .upload-section:hover {
+        background: #e2bfff;
+      }
+    </style>
   </head>
   <body>
     <div class="container-fluid px-4 px-md-5">
@@ -102,11 +169,12 @@
       <div class="row justify-content-center my-5">
         <div class="col-md-6 col-12 px-3 px-md-5">
           <label class="w-100">
-            <div class="p-4 col-12" style="background: #a848ff" role="button">
-              <div
-                class="p-4"
-                style="background: #d2a0ff; border: 1px white dotted"
-              >
+            <div
+              class="p-4 col-12 rounded-pill"
+              style="background: #a848ff"
+              role="button"
+            >
+              <div class="p-4 rounded-pill upload-section">
                 <div class="d-flex justify-content-center align-items-center">
                   <img
                     src="/up.png"
@@ -180,24 +248,28 @@
         class="modal-dialog rounded modal-dialog-scrollable modal-dialog-centered modal-lg"
         role="document"
       >
-        <div class="modal-content rounded p-3">
-          <div class="overflow-hidden">
+        <div class="modal-content rounded px-4 pt-4">
+          <div class="overflow-hidden rounded-5">
             <img id="image" class="w-100" />
           </div>
-          <select id="paintingStyle" required class="form-select mt-3">
+          <select
+            id="paintingStyle"
+            required
+            class="form-select mt-3 custom-select"
+          >
             <option value="MONET" selected>Monet</option>
             <option value="VANGOGH">Van Gogh</option>
             <option value="CAZENNE">Cazenne</option>
           </select>
           <div class="modal-footer d-flex justify-content-center gap-3">
             <button
-              class="btn btn-danger"
+              class="custom-btn danger"
               data-bs-dismiss="modal"
               aria-label="Close"
             >
               Cancel
             </button>
-            <button id="cropButton" type="button" class="btn btn-primary">
+            <button id="cropButton" type="button" class="custom-btn primary">
               Transform
             </button>
           </div>
@@ -215,24 +287,21 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
-          <div class="modal-header d-flex justify-content-center">
-            <h5 class="modal-title">Result</h5>
-          </div>
           <div
-            class="modal-body d-flex justify-content-center align-items-center flex-column p-5"
+            class="modal-body d-flex justify-content-center align-items-center flex-column pb-4"
           >
             <img
               id="fetchedImage"
               src="/loading.svg"
               alt="Fetched Image"
-              class="img-fluid"
+              class="img-fluid mb-4"
             />
-            <div id="loadingSpinner" class="spinner-border mt-5" role="status">
+            <div id="loadingSpinner" class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
             <button
               id="completeButton"
-              class="btn btn-success mt-5"
+              class="custom-btn primary"
               data-bs-dismiss="modal"
               style="display: none"
             >
@@ -291,6 +360,7 @@
             responsive: true,
             restore: false,
             minContainerHeight: 400,
+            aspectRatio: 1,
           });
         });
 
