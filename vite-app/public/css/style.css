@@ -67,10 +67,10 @@ body {
     border-radius: 999px;
     filter: blur(200px);
     z-index: -1;
-    width: 532px; /* Ukuran bola */
-    height: 532px; /* Ukuran bola */
-    right: 0; /* Mulai dari kanan */
-    bottom: 0; /* Mulai dari bawah */
+    width: 532px; 
+    height: 532px; 
+    right: 0; 
+    bottom: 0; 
    
   }
   
@@ -124,7 +124,7 @@ body {
   }
 
   .custom-btn.primary {
-    background-color: #4caf50; /* Green */
+    background-color: #4caf50; 
     color: white;
   }
 
@@ -134,7 +134,7 @@ body {
   }
 
   .custom-btn.danger {
-    background-color: #f44336; /* Red */
+    background-color: #f44336; 
     color: white;
   }
 
@@ -226,7 +226,7 @@ body {
       transform: translateX(-100vw);
     }
     100% {
-      transform: translateX(0); /* Move completely off-screen to the left */
+      transform: translateX(0); 
     }
   }
   
@@ -235,7 +235,7 @@ body {
       transform: translateX(100vw);
     }
     100% {
-      transform: translateX(0); /* Move completely off-screen to the right */
+      transform: translateX(0); 
     }
   }
   .text-custom {
