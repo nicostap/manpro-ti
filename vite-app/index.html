@@ -11,37 +11,12 @@
     <title>Home</title>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
   </head>
   <body style="overflow-x: hidden">
     <div class="position-relative container-fluid">
-      <div
-        class="position-absolute"
-        style="
-          width: 532px;
-          height: 532px;
-          right: 50vw;
-          top: 120vh;
-          background: radial-gradient(#d5d5ff 0%, #dd92e9 70%, #978ee2 100%);
-          border-radius: 999px;
-          z-index: -1;
-          filter: blur(200px);
-          overflow: hidden;
-        "
-      ></div>
-      <div
-        class="position-absolute"
-        style="
-          width: 532px;
-          height: 532px;
-          right: 0vw;
-          top: 30vh;
-          background: radial-gradient(#d5d5ff 0%, #dd92e9 50%, #978ee2 100%);
-          border-radius: 9999px;
-          z-index: -1;
-          filter: blur(200px);
-          overflow: hidden;
-        "
-      ></div>
+      <div class="main-blur-background-left"></div>
+      <div class="main-blur-background-right"></div>
 
       <!-- header -->
       <nav class="navbar navbar-expand-lg navbar-light p-4">
@@ -87,7 +62,7 @@
                   >Sign Up</a
                 >
               </li>
-              <li id="upload" class="nav-item" style="display: none">
+              <li id ="upload" class="nav-item" style="display: none">
                 <a
                   class="nav-link text-dark fw-bold"
                   href="http://%VITE_FRONTEND_URL%/upload/"
@@ -153,22 +128,6 @@
             <a
               id="getStarted"
               class="btn mt-4 mb-5"
-              style="
-                padding: 10px 20px;
-                border-radius: 20px;
-                background: linear-gradient(
-                  90deg,
-                  #b5c4ff 0%,
-                  #d1adff 25%,
-                  #ba7dd4 51%,
-                  #8e54e9 74%,
-                  #978de1 100%
-                );
-                color: white;
-                font-size: 1rem;
-                font-family: Inter;
-                font-weight: 700;
-              "
               href=""
             >
               Get started
@@ -197,15 +156,7 @@
             </h2>
           </div>
           <p
-            class="col-12 col-md-8 text-muted"
-            style="
-              width: 620px;
-              color: #505258;
-              font-size: 18px;
-              font-weight: 500;
-              line-height: 26px;
-              margin-top: 20px;
-            "
+            class="col-12 col-md-8 text-custom"
           >
             Upload your image, and our advanced algorithms will analyze its
             composition and colors, converting it into a batik-inspired pattern.
@@ -227,54 +178,6 @@
       </div>
     </div>
 
-    <script type="module">
-      AOS.init();
-      const signInButton = document.getElementById("signIn");
-      const signUpButton = document.getElementById("signUp");
-      const uploadButton = document.getElementById("upload");
-      const historyButton = document.getElementById("history");
-      const extraBar = document.getElementById("extra-bar");
-      const signOutButton = document.getElementById("signOut");
-      const getStartedButton = document.getElementById("getStarted");
-
-      async function checkUserAuthentication() {
-        try {
-          const response = await fetch(
-            `http://${import.meta.env.VITE_BACKEND_URL}/user`,
-            {
-              method: "GET",
-              credentials: "include",
-            }
-          );
-          if (response.ok) {
-            const data = await response.json();
-            if (data.user) {
-              uploadButton.style.display = "block";
-              extraBar.style.display = "block";
-              historyButton.style.display = "block";
-              signOutButton.style.display = "block";
-              signInButton.style.display = "none";
-              signUpButton.style.display = "none";
-              getStartedButton.setAttribute(
-                "href",
-                `http://${import.meta.env.VITE_FRONTEND_URL}/upload/`
-              );
-              return;
-            } else {
-              getStartedButton.setAttribute(
-                "href",
-                `http://${import.meta.env.VITE_FRONTEND_URL}/signup/`
-              );
-            }
-          }
-        } catch (error) {
-          getStartedButton.setAttribute(
-            "href",
-            `http://${import.meta.env.VITE_FRONTEND_URL}/signup/`
-          );
-        }
-      }
-      checkUserAuthentication();
-    </script>
+    <script type="module" src="../public/js/main.js"></script>
   </body>
 </html>
