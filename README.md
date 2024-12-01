@@ -1,5 +1,9 @@
 # Projek Manajemen Proyek Kelompok B5
 
+Guide deployment :
+1. Buka folder on-premise
+2. Jalankan run.sh
+
 Requirement :
 1. Install node.js
 2. Install docker desktop
