@@ -1,0 +1,55 @@
+name: Build and Upload Docker Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      folder_id:
+        description: "Destination folder ID"
+        required: true
+
+jobs:
+  build-and-upload:
+    name: Build and Upload Images
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker images
+      run: |
+        docker build -t mysql-db:latest ./mysql-db
+        docker build -t phpmyadmin:latest ./phpmyadmin
+        docker build -t nestjs-app:latest ./nestjs-app
+        docker build -t vite-app:latest ./vite-app
+        docker build -t redis:alpine ./redis
+
+    - name: Save Docker images as tar files
+      run: |
+        docker save mysql-db:latest > mysql-db.tar
+        docker save phpmyadmin:latest > phpmyadmin.tar
+        docker save nestjs-app:latest > nestjs-app.tar
+        docker save vite-app:latest > vite-app.tar
+        docker save redis:alpine > redis.tar
+
+    - name: Combine all tars into one archive
+      run: tar -cvf docker-images.tar *.tar
+
+    - name: Upload archive to Google Drive
+      uses: gdrive-uploader/action@v2.0.0
+      with:
+        folder-id: ${{ github.event.inputs.folder_id }}
+        files: docker-images.tar
+
+    - name: Clean up
+      run: |
+        rm *.tar
