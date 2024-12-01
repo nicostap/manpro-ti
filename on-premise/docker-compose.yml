@@ -1,0 +1,86 @@
+networks:
+  default:
+
+services:
+  mysql-db:
+    container_name: mysql-db
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLDB_PASSWORD}
+    ports:
+      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
+    volumes:
+      - mysql-volume:/var/lib/mysql:rw
+      - ./mysql-db:/docker-entrypoint-initdb.d/
+      - ./mysql-config:/etc/mysql/conf.d
+    networks:
+      - default
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    ports:
+      - ${PHPMYADMIN_LOCAL_PORT}:${PHPMYADMIN_DOCKER_PORT}
+    environment:
+      PMA_HOST: mysql-db
+      PMA_PORT: ${MYSQLDB_DOCKER_PORT}
+      PMA_USER: ${MYSQLDB_USER}
+      PMA_PASSWORD: ${MYSQLDB_PASSWORD}
+    networks:
+      - default
+
+  manpro-backend:
+    container_name: manpro-backend
+    image: nicostap1/manpro-backend:v1.0.0
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - ${NESTJS_APP_LOCAL_PORT}:${NESTJS_APP_DOCKER_PORT}
+    environment:
+      - DB_HOST=${MYSQLDB_HOST}
+      - DB_USER=${MYSQLDB_USER}
+      - DB_PASSWORD=${MYSQLDB_PASSWORD}
+      - DB_DATABASE=${MYSQLDB_DATABASE}
+      - DB_PORT=${MYSQLDB_DOCKER_PORT}
+    stdin_open: true
+    tty: true
+    volumes:
+      - nestjs-node-modules:/app/node_modules
+    networks:
+      - default
+    depends_on:
+      - mysql-db
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis-server
+    env_file: .env
+    ports:
+      - "6379:6379"
+
+  manpro-frontend:
+    container_name: manpro-frontend
+    image: nicostap1/manpro-frontend:v1.0.0
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - ${VITE_APP_LOCAL_PORT}:${VITE_APP_DOCKER_PORT}
+    stdin_open: true
+    tty: true
+    volumes:
+      - .env:/app/.env
+      - vite-node-modules:/app/node_modules
+    networks:
+      - default
+    depends_on:
+      - manpro-backend
+
+volumes:
+  mysql-volume:
+  vite-node-modules:
+  nestjs-node-modules:

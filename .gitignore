@@ -131,3 +131,6 @@ nestjs-app/uploads/**/*.png
 
 # Leftover
 nestjs-app/my-venv/
+
+# On premise file
+on-premise/*.env
