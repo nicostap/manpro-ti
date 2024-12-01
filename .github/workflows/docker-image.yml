@@ -1,0 +1,36 @@
+name: Build and Push Docker Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version for Docker images (e.g., v1.0.0)"
+        required: true
+
+jobs:
+  build-and-push:
+    name: Build and Push NestJS and Vite Images
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build and Tag Images
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/manpro-backend:${{ github.event.inputs.version }} ./nestjs-app
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/manpro-frontend:${{ github.event.inputs.version }} ./vite-app
+
+    - name: Push Images
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/manpro-backend:${{ github.event.inputs.version }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/manpro-frontend:${{ github.event.inputs.version }}
